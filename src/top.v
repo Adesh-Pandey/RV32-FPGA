@@ -1,7 +1,20 @@
 module top(
-    input clk,
-    input reset
+    input             clk,
+    input             reset,
+    output [31:0]     o_perf_cycles,
+    output [31:0]     o_perf_instrs,
+    output            o_perf_halted,
+    output [31:0]     o_pc,
+    output [4:0]      o_gpio
 );
+
+    wire [4:0] dmem_gpio;
+
+    assign o_perf_cycles = perf_cycles;
+    assign o_perf_instrs = perf_instrs;
+    assign o_perf_halted = perf_halted;
+    assign o_pc          = pc_out;
+    assign o_gpio        = dmem_gpio;
 
     // =========================================================
     //  ALL SIGNAL DECLARATIONS
@@ -361,7 +374,8 @@ module top(
         .we(ex_mem_mem_write),
         .a(ex_mem_alu_result),
         .wd(ex_mem_rd2),
-        .rd(mem_read_data)
+        .rd(mem_read_data),
+        .gpio_out(dmem_gpio)
     );
 
     // =========================================================

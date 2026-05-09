@@ -1,46 +1,24 @@
-// === TEST 1: EX/MEM forwarding (back-to-back dependency) ===
-00500093  // 0x00: addi x1, x0, 5       (x1 = 5)
-00108113  // 0x04: addi x2, x1, 1       (x2 = x1 + 1 = 6, forward from EX/MEM)
-00110193  // 0x08: addi x3, x2, 1       (x3 = x2 + 1 = 7, forward from EX/MEM)
+// Rotating-LED test for RV32 on Zybo
+// Writes a 5-bit pattern to MMIO address 0x100, delays, rotates left, repeats.
+//
+// Initial pattern: 10111 (0x17). After each rotate-left:
+//   10111 -> 01111 -> 11110 -> 11101 -> 11011 -> back to 10111
+//
+// Register usage:
+//   t0 (x5)  = MMIO LED address (0x100)
+//   t1 (x6)  = current 5-bit pattern
+//   t2 (x7)  = delay counter
+//   t3 (x28) = scratch (pattern << 1)
+//   t4 (x29) = scratch (pattern >> 4)
 
-// === TEST 2: MEM/WB forwarding (2-instruction gap) ===
-00A00213  // 0x0C: addi x4, x0, 10      (x4 = 10)
-00000013  // 0x10: nop                   (1 gap)
-00420293  // 0x14: addi x5, x4, 4       (x5 = x4 + 4 = 14, forward from MEM/WB)
-
-// === TEST 3: Load-use hazard (stall + forward) ===
-00102023  // 0x18: sw   x1, 0(x0)       (mem[0] = 5)
-00000013  // 0x1C: nop (let sw finish through pipeline)
-00000013  // 0x20: nop
-00000013  // 0x24: nop
-00002303  // 0x28: lw   x6, 0(x0)       (x6 = mem[0] = 5)
-00130393  // 0x2C: addi x7, x6, 1       (x7 = x6 + 1 = 6, LOAD-USE: stall 1 + forward)
-
-// === TEST 4: R-type forwarding chain ===
-00000013  // 0x30: nop
-00000013  // 0x34: nop
-00000013  // 0x38: nop
-002080B3  // 0x3C: add  x1, x1, x2      (x1 = 5+6 = 11, forward x1 and x2)
-00108133  // 0x40: add  x2, x1, x1      (x2 = 11+11 = 22, forward x1 from EX/MEM)
-
-// === TEST 5: Store with forwarded data ===
-00000013  // 0x44: nop
-00000013  // 0x48: nop
-00000013  // 0x4C: nop
-01400413  // 0x50: addi x8, x0, 20      (x8 = 20)
-00802023  // 0x54: sw   x8, 0(x0)       (mem[0] = 20, store forwarded x8)
-00000013  // 0x58: nop
-00000013  // 0x5C: nop
-00000013  // 0x60: nop
-00002483  // 0x64: lw   x9, 0(x0)       (x9 = mem[0] = 20)
-
-// === TEST 6: Branch with forwarding ===
-00000013  // 0x68: nop
-00000013  // 0x6C: nop
-00000013  // 0x70: nop
-00500513  // 0x74: addi x10, x0, 5      (x10 = 5)
-00500593  // 0x78: addi x11, x0, 5      (x11 = 5)
-00B50663  // 0x7C: beq  x10, x11, +12   (taken, forward x10 and x11, jump to 0x88)
-00100613  // 0x80: addi x12, x0, 1      (SKIPPED)
-00100613  // 0x84: addi x12, x0, 1      (SKIPPED)
-00000613  // 0x88: addi x12, x0, 0      (x12 = 0, branch landed here)
+10000293  // 0x00: addi t0, x0, 0x100        (LED MMIO addr)
+01700313  // 0x04: addi t1, x0, 0x17         (initial pattern 10111)
+00628023  // 0x08: sw   t1, 0(t0)            <-- loop:
+03C003B7  // 0x0C: lui  t2, 0x3C00           (delay ~63M iter -> ~2 sec)
+FFF38393  // 0x10: addi t2, t2, -1           <-- delay:
+FE039EE3  // 0x14: bne  t2, x0, -4           (loop back to delay)
+00131E13  // 0x18: slli t3, t1, 1            (rotate part 1: shift left)
+00435E93  // 0x1C: srli t4, t1, 4            (rotate part 2: extract bit 4)
+01DE6333  // 0x20: or   t1, t3, t4           (combine)
+01F37313  // 0x24: andi t1, t1, 0x1F         (mask to 5 bits)
+FE1FF06F  // 0x28: jal  x0, -0x20            (jump back to loop)

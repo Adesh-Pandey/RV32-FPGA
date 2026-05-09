@@ -1,0 +1,10 @@
+src/pc.v
+src/pc_adder.v
+src/imem.v
+src/control.v
+src/regfile.v
+src/imm_gen.v
+src/alu.v
+src/dmem.v
+src/top.v
+tb/top_tb.v

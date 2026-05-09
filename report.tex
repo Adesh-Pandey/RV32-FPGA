@@ -1,0 +1,888 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{pgfgantt}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=blue,
+    urlcolor=cyan
+}
+
+\geometry{margin=1in}
+\onehalfspacing
+
+\usepackage{titlesec}
+
+% Remove "Chapter" word and use numeric headings
+\titleformat{\chapter}[hang]
+{\normalfont\LARGE\bfseries}
+{\thechapter.}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt}
+
+% ---- Table column types ----
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ---- Verilog listing style ----
+\lstdefinestyle{verilog}{
+    language=Verilog,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    tabsize=4,
+    showstringspaces=false,
+    captionpos=b
+}
+
+% ---- Console output style ----
+\lstdefinestyle{console}{
+    basicstyle=\ttfamily\footnotesize,
+    frame=single,
+    breaklines=true,
+    backgroundcolor=\color{gray!10},
+    captionpos=b
+}
+
+
+\begin{document}
+\pagenumbering{gobble}
+
+%================ TITLE PAGE ==================
+\begin{titlepage}
+\centering
+
+% INSERT TU LOGO PNG HERE (NAME FILE: Logo/TU_Logo.png)
+% \includegraphics[width=0.25\textwidth]{Logo/TU_Logo.png}\\[0.5cm]
+
+{\Large TRIBHUVAN UNIVERSITY}\\
+{\Large INSTITUTE OF ENGINEERING}\\
+{\Large PULCHOWK CAMPUS}\\[1cm]
+
+{\bfseries\LARGE A MID-TERM REPORT}\\[0.5cm]
+{\Large ON}\\[0.5cm]
+{\bfseries\LARGE DESIGN AND IMPLEMENTATION OF \\[0.3cm] RISC-V PIPELINING}\\[2cm]
+
+SUBMITTED BY:\\[0.3cm]
+\textbf{Aayush Gelal (079BEI002)}\\
+\textbf{Adesh Pandey (079BEI004)}\\
+\textbf{Bishesh Paudel (079BEI016)}\\[1cm]
+
+SUBMITTED TO:\\
+Department of Electronics \& Computer Engineering\\[1cm]
+
+March 2026
+\end{titlepage}
+
+\clearpage
+\pagenumbering{roman}
+
+%================ ACKNOWLEDGEMENT ==================
+\chapter*{Acknowledgement}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+
+We would like to express our sincere gratitude to the Department of Electronics and
+Computer Engineering for providing the academic environment and laboratory resources
+necessary to carry out this project. We are deeply grateful to our teachers and the
+departmental faculty for their continued guidance and technical oversight throughout the
+design and implementation phases. Their expertise in RISC-V microarchitecture and
+hardware design principles has been invaluable in shaping the direction of this work.
+
+We also acknowledge the support of our peers and seniors, whose collaborative
+discussions have helped refine our implementation approach. Furthermore, we appreciate
+the resources provided by the global RISC-V open-source community, which have been
+essential in understanding the industry-standard specifications required for this work.
+As we approach the hardware synthesis and FPGA deployment phase, we look forward to
+the continued mentorship of our faculty and the department.
+
+%================ ABSTRACT ==================
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This mid-term report documents the progress made toward the design and implementation
+of a five-stage pipelined processor based on the RV32I RISC-V instruction set
+architecture. At the current stage of the project, the processor design has progressed
+through two major phases: a fully functional single-cycle implementation supporting
+the complete RV32I instruction set, followed by a successful conversion to a five-stage
+pipelined architecture with comprehensive hazard handling.
+
+The pipelined processor implements all base RV32I instructions including arithmetic,
+logical, shift, comparison, load, store, branch, jump, and upper immediate operations.
+The pipeline incorporates a data forwarding unit that resolves read-after-write hazards
+from both the EX/MEM and MEM/WB stages, a load-use hazard detection unit that inserts
+pipeline stalls when forwarding alone is insufficient, and a control hazard mechanism
+that flushes incorrectly fetched instructions on taken branches and jumps.
+
+All pipeline hazard mechanisms have been verified through simulation using Icarus
+Verilog, with a comprehensive test program that exercises EX/MEM forwarding, MEM/WB
+forwarding, load-use stalling, store forwarding, R-type forwarding chains, and branch
+flushing with forwarded operands. All test cases pass with correct results. The
+remaining work focuses on synthesizing the design on an FPGA platform for hardware
+validation.
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+%================ LIST OF ABBREVIATIONS ==================
+\chapter*{List of Abbreviations}
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+
+\begin{tabular}{ll}
+ALU   & Arithmetic Logic Unit \\
+CPI   & Cycles Per Instruction \\
+CPU   & Central Processing Unit \\
+EX    & Execute \\
+FPGA  & Field Programmable Gate Array \\
+HDL   & Hardware Description Language \\
+ID    & Instruction Decode \\
+IF    & Instruction Fetch \\
+ISA   & Instruction Set Architecture \\
+MEM   & Memory Access \\
+NOP   & No Operation \\
+PC    & Program Counter \\
+RAW   & Read After Write \\
+RISC  & Reduced Instruction Set Computer \\
+RTL   & Register Transfer Level \\
+RV32I & 32-bit RISC-V Base Integer ISA \\
+VCD   & Value Change Dump \\
+WB    & Write Back \\
+\end{tabular}
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%================ CHAPTER 1: INTRODUCTION ==================
+\chapter{Introduction}
+
+\section{Background}
+Processor architecture has evolved significantly since the early days of computing,
+transitioning from simple, hardwired control units to highly parallel and deeply
+pipelined designs. At the core of this evolution lies the instruction set architecture,
+which defines the interface between software and hardware. Traditional commercial ISAs
+are often proprietary, limiting transparency and hindering academic exploration.
+
+RISC-V is an open, modular instruction set architecture developed to address these
+limitations. Its clean design, extensibility, and royalty-free nature make it an ideal
+candidate for educational processor design projects. Implementing a RISC-V processor
+provides students with practical exposure to fundamental architectural concepts such as
+instruction decoding, datapath control, and memory interfacing.
+
+\section{Objectives}
+The primary objectives of this project are as follows:
+
+\begin{itemize}
+    \item To design and implement a 32-bit processor compliant with the RISC-V RV32I
+          instruction set architecture.
+    \item To implement a classical five-stage pipelined datapath with hazard handling.
+    \item To support all RV32I instruction formats and operations.
+    \item To verify functional correctness through simulation.
+    \item To synthesize and implement the processor on an FPGA platform.
+\end{itemize}
+
+\section{Scope}
+The scope of this project is limited to the design, simulation, and FPGA implementation
+of a 32-bit pipelined RISC-V processor core. The processor supports all RV32I integer
+instructions, including arithmetic, logical, shift, comparison, load, store, branch,
+and jump instructions.
+
+Advanced features such as floating-point extensions, vector processing, cache memory,
+virtual memory, operating system support, and complex peripheral interfaces are beyond
+the scope of this work. The focus is strictly on the processor core, pipeline
+operation, and correct instruction execution.
+
+\section{Work Completed to Date}
+As of this mid-term report, the following major milestones have been achieved:
+
+\begin{itemize}
+    \item Design and implementation of all individual hardware modules in Verilog HDL:
+          ALU, Control Unit, Register File, Program Counter, Immediate Generator,
+          Instruction Memory, and Data Memory.
+    \item Full integration and verification of a single-cycle RV32I CPU supporting
+          all base integer instructions.
+    \item Successful conversion of the single-cycle design to a five-stage pipelined
+          architecture (\texttt{top.v}) with four pipeline registers (IF/ID, ID/EX,
+          EX/MEM, MEM/WB).
+    \item Implementation of a data forwarding unit supporting EX/MEM and MEM/WB
+          forwarding paths.
+    \item Implementation of a load-use hazard detection unit with pipeline stalling.
+    \item Implementation of control hazard handling via pipeline flushing for branches
+          and jumps.
+    \item Comprehensive pipeline hazard verification through a 46-instruction test
+          program with all tests passing.
+\end{itemize}
+
+The remaining work consists of synthesizing the pipelined design on an FPGA platform
+for hardware validation and performance evaluation.
+
+
+%================ CHAPTER 2: MODULE DESIGN ==================
+\chapter{Module-Level Design and Implementation}
+
+This chapter describes each Verilog module designed and implemented during the
+project. All modules are written using synthesizable RTL constructs compatible with
+Icarus Verilog simulation and FPGA synthesis tools. Table~\ref{tab:modules}
+summarizes the project source files.
+
+\begin{table}[h!]
+\centering
+\caption{Project Source File Summary}
+\label{tab:modules}
+\begin{tabular}{L{3.2cm} L{2.4cm} L{6.8cm}}
+    \toprule
+    \textbf{Module} & \textbf{File} & \textbf{Function} \\
+    \midrule
+    ALU              & \texttt{alu.v}       & Arithmetic and logical operations \\
+    Control Unit     & \texttt{control.v}   & Opcode decoding and control signal generation \\
+    Register File    & \texttt{regfile.v}   & 32$\times$32-bit register storage \\
+    Program Counter  & \texttt{pc.v}        & Instruction address register with enable \\
+    PC Adder         & \texttt{pc\_adder.v} & PC + 4 increment logic \\
+    Immediate Gen.   & \texttt{imm\_gen.v}  & Sign-extended immediate extraction \\
+    Instruction Mem. & \texttt{imem.v}      & Read-only instruction storage (64 words) \\
+    Data Memory      & \texttt{dmem.v}      & Read/write data storage (64 words) \\
+    Top-Level CPU    & \texttt{top.v}       & 5-stage pipeline with hazard handling \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Arithmetic Logic Unit (ALU)}
+The ALU module (\texttt{alu.v}) implements all arithmetic and logical operations
+required by the RV32I instruction set. It accepts two 32-bit operands and a 4-bit
+control selector, producing a 32-bit result and a zero flag. The ALU is implemented
+as a purely combinational module using a \texttt{case} statement. The supported
+operations are listed in Table~\ref{tab:aluops}.
+
+\begin{table}[h!]
+\centering
+\caption{ALU Operations and Control Codes}
+\label{tab:aluops}
+\begin{tabular}{C{2.4cm} L{3.6cm} L{5.4cm}}
+    \toprule
+    \textbf{Control} & \textbf{Operation} & \textbf{Description} \\
+    \midrule
+    \texttt{4'b0000} & ADD  & 32-bit addition \\
+    \texttt{4'b0001} & SUB  & 32-bit subtraction \\
+    \texttt{4'b0010} & AND  & Bitwise AND \\
+    \texttt{4'b0011} & OR   & Bitwise OR \\
+    \texttt{4'b0100} & XOR  & Bitwise XOR \\
+    \texttt{4'b0101} & SLT  & Signed set-less-than \\
+    \texttt{4'b0110} & SLL  & Shift left logical \\
+    \texttt{4'b0111} & SRL  & Shift right logical \\
+    \texttt{4'b1000} & SLTU & Unsigned set-less-than \\
+    \texttt{4'b1001} & SRA  & Shift right arithmetic \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Control Unit}
+The Control Unit (\texttt{control.v}) decodes the 7-bit opcode, 3-bit \texttt{funct3},
+and 7-bit \texttt{funct7} fields to generate all control signals required for
+instruction execution. The control signals include \texttt{reg\_write},
+\texttt{alu\_src}, \texttt{alu\_control}, \texttt{mem\_write}, \texttt{result\_src},
+\texttt{branch}, \texttt{jump}, \texttt{jalr}, and \texttt{alu\_src1}.
+
+The \texttt{result\_src} signal is a 2-bit selector: \texttt{2'b00} selects the ALU
+result, \texttt{2'b01} selects memory read data, and \texttt{2'b10} selects PC+4 for
+link instructions (JAL, JALR). The \texttt{alu\_src1} signal selects the ALU first
+operand source: \texttt{2'b00} for register data, \texttt{2'b01} for the PC value
+(AUIPC), and \texttt{2'b10} for zero (LUI). Table~\ref{tab:control} summarizes the
+control signal values for each instruction class.
+
+\begin{table}[h!]
+\centering
+\caption{Control Unit Signal Truth Table}
+\label{tab:control}
+\begin{tabular}{L{2.0cm} C{1.5cm} C{1.2cm} C{1.2cm} C{1.2cm} C{1.5cm} C{1.2cm} C{1.2cm}}
+    \toprule
+    \textbf{Type} & \textbf{Opcode} & \textbf{RegWr} & \textbf{ALU Src} &
+    \textbf{MemWr} & \textbf{ResSrc} & \textbf{Branch} & \textbf{Jump} \\
+    \midrule
+    R-Type    & 0110011 & 1 & 0 & 0 & 00 & 0 & 0 \\
+    I-Type    & 0010011 & 1 & 1 & 0 & 00 & 0 & 0 \\
+    Load      & 0000011 & 1 & 1 & 0 & 01 & 0 & 0 \\
+    Store     & 0100011 & 0 & 1 & 1 & -- & 0 & 0 \\
+    Branch    & 1100011 & 0 & 0 & 0 & -- & 1 & 0 \\
+    JAL       & 1101111 & 1 & 0 & 0 & 10 & 0 & 1 \\
+    JALR      & 1100111 & 1 & 1 & 0 & 10 & 0 & 0 \\
+    LUI       & 0110111 & 1 & 1 & 0 & 00 & 0 & 0 \\
+    AUIPC     & 0010111 & 1 & 1 & 0 & 00 & 0 & 0 \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Register File}
+The Register File (\texttt{regfile.v}) implements 32 general-purpose 32-bit registers.
+It provides two asynchronous read ports and one synchronous write port. Register
+\texttt{x0} is hardwired to zero: reads from address zero always return
+\texttt{32'b0}, regardless of any prior write.
+
+\section{Program Counter and PC Adder}
+The Program Counter module (\texttt{pc.v}) maintains the current instruction address.
+It features a synchronous reset and an enable signal used by the hazard detection unit
+to stall the PC during load-use hazards. The PC Adder (\texttt{pc\_adder.v}) is a
+simple combinational module that adds 4 to the current PC for sequential fetch.
+
+\section{Immediate Generator}
+The Immediate Generator (\texttt{imm\_gen.v}) extracts and sign-extends the immediate
+field from the instruction based on the opcode. It supports all six RV32I immediate
+formats:
+
+\begin{itemize}
+    \item \textbf{I-Type} (ADDI, loads, JALR): \texttt{\{\{20\{instr[31]\}\}, instr[31:20]\}}
+    \item \textbf{S-Type} (stores): \texttt{\{\{20\{instr[31]\}\}, instr[31:25], instr[11:7]\}}
+    \item \textbf{B-Type} (branches): 13-bit with implicit LSB zero
+    \item \textbf{J-Type} (JAL): 21-bit with implicit LSB zero
+    \item \textbf{U-Type} (LUI, AUIPC): \texttt{\{instr[31:12], 12'b0\}}
+\end{itemize}
+
+\section{Instruction and Data Memory}
+The Instruction Memory (\texttt{imem.v}) is a 64-word read-only memory initialized
+from a hexadecimal file (\texttt{program.hex}) using \texttt{\$readmemh}. The Data
+Memory (\texttt{dmem.v}) is a 64-word synchronous-write, asynchronous-read memory.
+Both memories use word-aligned addressing via \texttt{a[31:2]}.
+
+
+%================ CHAPTER 3: SINGLE-CYCLE TO PIPELINE ==================
+\chapter{From Single-Cycle to Pipelined Architecture}
+
+This chapter describes the evolution of the processor from a single-cycle design to a
+five-stage pipelined architecture, which constitutes the core technical contribution
+of this project phase.
+
+\section{Single-Cycle Design}
+The initial implementation connected all modules into a single-cycle datapath where
+each instruction completes in one clock cycle. The single-cycle design was developed
+incrementally:
+
+\begin{enumerate}
+    \item Basic arithmetic instructions (ADD, ADDI) were implemented first.
+    \item Data memory operations (LW, SW) were added with the Data Memory module.
+    \item Branch instructions (BEQ, BNE, BLT, BGE, BLTU, BGEU) were implemented
+          with combinational branch condition evaluation.
+    \item Jump instructions (JAL, JALR) were added with PC+4 link writeback.
+    \item The complete RV32I instruction set was finalized, including LUI, AUIPC,
+          and all remaining I-type, R-type, and shift operations.
+\end{enumerate}
+
+While functionally correct, the single-cycle design has a fundamental performance
+limitation: the clock period must accommodate the longest instruction path (load
+instruction through fetch, decode, ALU, memory, and writeback), leaving faster
+instructions idle for the majority of the cycle.
+
+\section{Five-Stage Pipeline Architecture}
+To improve instruction throughput, the single-cycle datapath was partitioned into five
+pipeline stages with registers inserted between each pair of adjacent stages:
+
+\begin{enumerate}
+    \item \textbf{Instruction Fetch (IF)}: The PC drives the instruction memory. The
+          fetched instruction and PC value are written to the IF/ID register.
+    \item \textbf{Instruction Decode (ID)}: The control unit decodes the instruction.
+          The register file is read and the immediate is generated. All values and
+          control signals are written to the ID/EX register.
+    \item \textbf{Execute (EX)}: The ALU performs the operation. Branch conditions are
+          evaluated. Forwarded operands are selected. Results are written to the
+          EX/MEM register.
+    \item \textbf{Memory Access (MEM)}: Data memory is read or written. The result
+          and control signals propagate to the MEM/WB register.
+    \item \textbf{Write Back (WB)}: The result multiplexer selects between ALU
+          output, memory data, or PC+4, and writes back to the register file.
+\end{enumerate}
+
+\section{Pipeline Register Design}
+Four pipeline registers are implemented as synchronous registers clocked on the
+positive edge. Each register stores both datapath values and control signals needed
+by subsequent stages. Table~\ref{tab:pipereg} lists the contents of each pipeline
+register.
+
+\begin{table}[H]
+\centering
+\caption{Pipeline Register Contents}
+\label{tab:pipereg}
+\begin{tabular}{L{2.0cm} L{10.2cm}}
+    \toprule
+    \textbf{Register} & \textbf{Contents} \\
+    \midrule
+    IF/ID  & Instruction (32b), PC (32b), PC+4 (32b) \\
+    ID/EX  & PC, PC+4, rs1 data, rs2 data, immediate, rd address, rs1/rs2
+             addresses, funct3, and all control signals (reg\_write, alu\_src,
+             mem\_write, branch, jump, jalr, result\_src, alu\_src1, alu\_control) \\
+    EX/MEM & ALU result, store data (forwarded rs2), PC+4, rd address,
+             reg\_write, mem\_write, result\_src \\
+    MEM/WB & ALU result, memory read data, PC+4, rd address, reg\_write,
+             result\_src \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+% ---- FIGURE: Five-Stage Pipeline Architecture ----
+% Uncomment and provide your own diagram:
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.85\textwidth]{pictures/5-stage.png}
+% \caption{Five-Stage RISC-V Pipeline Architecture (IF, ID, EX, MEM, WB)}
+% \label{fig:pipeline}
+% \end{figure}
+
+
+%================ CHAPTER 4: HAZARD HANDLING ==================
+\chapter{Pipeline Hazard Detection and Resolution}
+
+Pipelined execution introduces hazards that can lead to incorrect results if not
+properly managed. This chapter describes the three hazard handling mechanisms
+implemented in the processor.
+
+\section{Data Forwarding Unit}
+The forwarding unit detects RAW (read-after-write) data dependencies between
+instructions in different pipeline stages. Two forwarding control signals,
+\texttt{forward\_a} and \texttt{forward\_b}, independently control the source of
+each ALU operand:
+
+\begin{itemize}
+    \item \texttt{2'b00}: No forwarding; use the value from the ID/EX register.
+    \item \texttt{2'b10}: Forward from EX/MEM stage (1-instruction gap).
+    \item \texttt{2'b01}: Forward from MEM/WB stage (2-instruction gap).
+\end{itemize}
+
+The EX/MEM path has priority over the MEM/WB path, since a more recent instruction's
+result takes precedence when both match. The forwarding logic checks that the
+destination register is not \texttt{x0} and that the producing instruction has
+\texttt{reg\_write} asserted.
+
+For JAL/JALR instructions in the EX/MEM stage, the forwarded value is PC+4 rather
+than the ALU result, since these instructions write the return address to the
+destination register.
+
+\section{Load-Use Hazard Detection}
+When a load instruction is in the EX stage and the immediately following instruction
+in the ID stage reads the same register, forwarding alone cannot resolve the
+dependency because the load data is not yet available. The hazard detection unit
+asserts a \texttt{stall} signal when:
+
+\begin{enumerate}
+    \item The instruction in the ID/EX register has \texttt{result\_src == 2'b01}
+          (indicating a load).
+    \item The destination register is not \texttt{x0}.
+    \item The destination register matches either the \texttt{rs1} or \texttt{rs2}
+          field of the instruction in the IF/ID register.
+\end{enumerate}
+
+When \texttt{stall} is asserted:
+\begin{itemize}
+    \item The PC is frozen (enable deasserted).
+    \item The IF/ID register holds its current value.
+    \item A bubble (NOP) is inserted into the ID/EX register by clearing all control
+          signals.
+\end{itemize}
+
+After one stall cycle, the load data becomes available and is forwarded normally from
+the MEM/WB stage.
+
+\section{Control Hazard Handling}
+Branch and jump instructions are resolved in the EX stage. When a branch is taken or
+a jump instruction is detected, the \texttt{flush} signal is asserted:
+
+\[
+\texttt{flush} = \texttt{ex\_branch\_taken} \;\|\; \texttt{id\_ex\_jump} \;\|\; \texttt{id\_ex\_jalr}
+\]
+
+The flush signal clears the IF/ID register (inserting a NOP instruction
+\texttt{0x00000013}) and clears the ID/EX register (inserting a bubble). The PC is
+simultaneously updated to the branch target (PC + immediate) or JALR target
+(ALU result \& \texttt{0xFFFFFFFE}).
+
+Branch conditions are evaluated in the EX stage using the ALU result and \texttt{funct3}:
+
+\begin{table}[H]
+\centering
+\caption{Branch Condition Evaluation}
+\label{tab:branch}
+\begin{tabular}{C{2.0cm} L{3.0cm} L{5.5cm}}
+    \toprule
+    \textbf{funct3} & \textbf{Instruction} & \textbf{Condition (taken when)} \\
+    \midrule
+    \texttt{3'b000} & BEQ  & ALU zero flag is set \\
+    \texttt{3'b001} & BNE  & ALU zero flag is clear \\
+    \texttt{3'b100} & BLT  & ALU result[0] is set (SLT) \\
+    \texttt{3'b101} & BGE  & ALU result[0] is clear \\
+    \texttt{3'b110} & BLTU & ALU result[0] is set (SLTU) \\
+    \texttt{3'b111} & BGEU & ALU result[0] is clear \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Hazard Interaction Summary}
+Table~\ref{tab:hazard_summary} summarizes how the pipeline responds to each hazard
+type.
+
+\begin{table}[H]
+\centering
+\caption{Hazard Resolution Summary}
+\label{tab:hazard_summary}
+\begin{tabular}{L{3.5cm} L{2.8cm} L{5.0cm}}
+    \toprule
+    \textbf{Hazard Type} & \textbf{Mechanism} & \textbf{Pipeline Action} \\
+    \midrule
+    RAW (1-cycle gap)    & EX/MEM forwarding  & Forward result to ALU input \\
+    RAW (2-cycle gap)    & MEM/WB forwarding  & Forward result to ALU input \\
+    Load-use             & Stall + forward    & 1-cycle stall, then MEM/WB forward \\
+    Taken branch / jump  & Flush              & Clear IF/ID and ID/EX, redirect PC \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+
+%================ CHAPTER 5: SIMULATION ==================
+\chapter{Simulation and Verification}
+
+\section{Software Tools Used}
+
+\subsection{Icarus Verilog}
+Icarus Verilog is used as the primary compiler and simulator for Verilog HDL. It
+supports synthesizable RTL constructs and provides accurate event-driven simulation.
+All modules and the complete pipelined processor are compiled and simulated using
+this tool.
+
+\subsection{GTKWave}
+GTKWave is employed as a waveform visualization and debugging tool. The simulation
+generates a Value Change Dump (\texttt{.vcd}) file that is analyzed in GTKWave to
+observe pipeline register transitions, forwarding path activations, stall cycles,
+and flush events across clock cycles.
+
+\section{Module-Level Testbenches}
+Individual testbenches were written and executed for the ALU and Register File modules
+to verify correct functionality in isolation before integration.
+
+\begin{table}[H]
+\centering
+\caption{Module-Level Testbench Summary}
+\label{tab:testbenches}
+\begin{tabular}{L{2.4cm} L{2.8cm} L{5.8cm} C{1.6cm}}
+    \toprule
+    \textbf{Module} & \textbf{Testbench} & \textbf{Tests Performed} & \textbf{Result} \\
+    \midrule
+    ALU           & \texttt{alu\_tb.v}     & ADD, SUB, AND operations    & Pass \\
+    Register File & \texttt{regfile\_tb.v} & Write/read-back, x0 guard  & Pass \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Pipeline Hazard Test Program}
+The primary verification of the pipelined processor is performed through a
+comprehensive test program (\texttt{program.hex}) consisting of 46 instructions
+organized into six targeted test cases. Each test case exercises a specific pipeline
+hazard scenario.
+
+\subsection{Test 1: EX/MEM Forwarding (Back-to-Back Dependency)}
+Three consecutive instructions create immediate data dependencies:
+\begin{lstlisting}[style=console]
+addi x1, x0, 5       # x1 = 5
+addi x2, x1, 1       # x2 = x1 + 1 = 6  (forward x1 from EX/MEM)
+addi x3, x2, 1       # x3 = x2 + 1 = 7  (forward x2 from EX/MEM)
+\end{lstlisting}
+
+\subsection{Test 2: MEM/WB Forwarding (2-Instruction Gap)}
+A NOP separates the producing and consuming instructions, testing the MEM/WB
+forwarding path:
+\begin{lstlisting}[style=console]
+addi x4, x0, 10      # x4 = 10
+nop                   # 1-instruction gap
+addi x5, x4, 4       # x5 = x4 + 4 = 14  (forward x4 from MEM/WB)
+\end{lstlisting}
+
+\subsection{Test 3: Load-Use Hazard (Stall + Forward)}
+A load immediately followed by a dependent instruction triggers the stall mechanism:
+\begin{lstlisting}[style=console]
+sw   x1, 0(x0)       # mem[0] = 5
+...                   # (NOPs to let store complete)
+lw   x6, 0(x0)       # x6 = mem[0] = 5
+addi x7, x6, 1       # x7 = x6 + 1 = 6   (stall 1 cycle, then forward)
+\end{lstlisting}
+
+\subsection{Test 4: R-Type Forwarding Chain}
+Back-to-back R-type instructions with register-to-register forwarding:
+\begin{lstlisting}[style=console]
+add  x1, x1, x2      # x1 = 5 + 6 = 11   (forward both operands)
+add  x2, x1, x1      # x2 = 11 + 11 = 22 (forward x1 from EX/MEM)
+\end{lstlisting}
+
+\subsection{Test 5: Store with Forwarded Data}
+A store instruction uses a recently computed value, verifying forwarding into the
+store data path:
+\begin{lstlisting}[style=console]
+addi x8, x0, 20      # x8 = 20
+sw   x8, 0(x0)       # mem[0] = 20  (store forwarded x8)
+...
+lw   x9, 0(x0)       # x9 = mem[0] = 20  (verify store)
+\end{lstlisting}
+
+\subsection{Test 6: Branch with Forwarding}
+A taken branch uses forwarded operands for condition evaluation:
+\begin{lstlisting}[style=console]
+addi x10, x0, 5      # x10 = 5
+addi x11, x0, 5      # x11 = 5
+beq  x10, x11, +12   # taken (forward x10 and x11, flush 2 instrs)
+addi x12, x0, 1      # SKIPPED (flushed)
+addi x12, x0, 1      # SKIPPED (flushed)
+addi x12, x0, 0      # x12 = 0 (branch target)
+\end{lstlisting}
+
+\section{Simulation Results}
+The pipelined processor testbench (\texttt{top\_tb.v}) executes the test program for
+600 time units (60 clock cycles) and then reads the final register values. The
+complete simulation output is shown below:
+
+\begin{lstlisting}[style=console,caption={Complete Simulation Output},label={lst:simout}]
+=== Pipeline Hazard Tests ===
+--- EX/MEM Forwarding (back-to-back) ---
+x1  = 11 (expect 11, final after test4)
+x2  = 22 (expect 22, final after test4)
+x3  = 7  (expect 7,  chain fwd)
+--- MEM/WB Forwarding (2-gap) ---
+x5  = 14 (expect 14, x4+4)
+--- Load-Use Hazard (stall + forward) ---
+x6  = 5  (expect 5,  loaded)
+x7  = 6  (expect 6,  load-use fwd)
+--- Store Forwarding ---
+x8  = 20 (expect 20)
+x9  = 20 (expect 20, store-then-load)
+--- Branch with Forwarding ---
+x10 = 5  (expect 5)
+x11 = 5  (expect 5)
+x12 = 0  (expect 0,  branch taken)
+\end{lstlisting}
+
+All twelve register values match their expected results, confirming correct operation
+of:
+\begin{itemize}
+    \item EX/MEM data forwarding (back-to-back and chained)
+    \item MEM/WB data forwarding (2-instruction gap)
+    \item Load-use hazard detection and stalling
+    \item Store data forwarding
+    \item Branch condition evaluation with forwarded operands
+    \item Pipeline flushing on taken branches
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Pipeline Verification Results Summary}
+\label{tab:results}
+\begin{tabular}{C{1.0cm} L{4.8cm} C{2.0cm} C{2.0cm} C{1.4cm}}
+    \toprule
+    \textbf{Test} & \textbf{Hazard Tested} & \textbf{Expected} & \textbf{Observed} & \textbf{Result} \\
+    \midrule
+    1 & EX/MEM forwarding      & x3 = 7   & x3 = 7   & Pass \\
+    2 & MEM/WB forwarding      & x5 = 14  & x5 = 14  & Pass \\
+    3 & Load-use stall         & x7 = 6   & x7 = 6   & Pass \\
+    4 & R-type fwd chain       & x2 = 22  & x2 = 22  & Pass \\
+    5 & Store forwarding       & x9 = 20  & x9 = 20  & Pass \\
+    6 & Branch + flush         & x12 = 0  & x12 = 0  & Pass \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+
+%================ CHAPTER 6: SUPPORTED INSTRUCTIONS ==================
+\chapter{Supported Instruction Set}
+
+The processor supports all base RV32I instructions, ensuring full compliance with the
+32-bit RISC-V specification. Table~\ref{tab:instructions} lists all supported
+instructions organized by format type.
+
+\begin{table}[H]
+\centering
+\caption{Complete RV32I Instruction Set Supported by the Processor}
+\label{tab:instructions}
+\begin{tabular}{L{2.2cm} L{2.0cm} L{7.2cm}}
+    \toprule
+    \textbf{Format} & \textbf{Opcode} & \textbf{Instructions} \\
+    \midrule
+    R-Type  & 0110011 & ADD, SUB, AND, OR, XOR, SLL, SRL, SRA, SLT, SLTU \\
+    I-Type  & 0010011 & ADDI, ANDI, ORI, XORI, SLLI, SRLI, SRAI, SLTI, SLTIU \\
+    Load    & 0000011 & LW \\
+    Store   & 0100011 & SW \\
+    Branch  & 1100011 & BEQ, BNE, BLT, BGE, BLTU, BGEU \\
+    JAL     & 1101111 & JAL \\
+    JALR    & 1100111 & JALR \\
+    LUI     & 0110111 & LUI \\
+    AUIPC   & 0010111 & AUIPC \\
+    \bottomrule
+\end{tabular}
+\end{table}
+
+The six RV32I instruction formats (R, I, S, B, U, J) are fully handled by the
+Immediate Generator and Control Unit. All instruction encodings conform to the RISC-V
+specification as defined in the unprivileged ISA manual \cite{riscv}.
+
+
+%================ CHAPTER 7: REMAINING WORK ==================
+\chapter{Remaining Work: FPGA Implementation}
+
+With the pipelined processor fully implemented and verified through simulation, the
+remaining work focuses on FPGA synthesis and hardware validation.
+
+\section{FPGA Synthesis Strategy}
+The processor is implemented using synthesizable Verilog HDL and targeted for
+deployment on an FPGA platform. The design follows a modular approach with separate
+Verilog modules for each functional unit, facilitating synthesis tool optimization.
+Key synthesis tasks include:
+
+\begin{itemize}
+    \item Mapping the Verilog design onto FPGA configurable logic blocks, flip-flops,
+          and block RAM resources.
+    \item Applying clock constraints and performing static timing analysis to
+          determine the maximum operating frequency.
+    \item Evaluating resource utilization (LUTs, registers, memory blocks) and
+          comparing with similar RISC-V implementations.
+\end{itemize}
+
+\section{Hardware Validation}
+FPGA-based validation will complement RTL simulation by confirming correct processor
+operation under real hardware conditions. The validation plan includes:
+
+\begin{itemize}
+    \item Programming the FPGA with the synthesized bitstream.
+    \item Loading test programs into instruction memory.
+    \item Observing processor behavior using on-board LEDs, switches, or a UART
+          debugging interface.
+    \item Verifying consistency between simulation results and hardware behavior.
+\end{itemize}
+
+\section{Implementation Considerations}
+Several considerations guide the FPGA implementation phase:
+
+\begin{itemize}
+    \item \textbf{Synthesizability}: All Verilog constructs used in the design are
+          compatible with FPGA synthesis tools. Non-synthesizable constructs
+          (\texttt{\$readmemh}, \texttt{\$display}) are confined to simulation
+          testbenches.
+    \item \textbf{Timing Closure}: Pipeline stages are balanced to minimize critical
+          path delays and achieve reliable operation.
+    \item \textbf{Memory Initialization}: Instruction memory will be initialized
+          using FPGA vendor-specific mechanisms (e.g., block RAM initialization
+          files) to replace the simulation-only \texttt{\$readmemh}.
+\end{itemize}
+
+
+%================ CHAPTER 8: TIMELINE ==================
+\chapter{Project Timeline}
+
+Figure~\ref{fig:gantt_chart} shows the updated project Gantt chart. Phases 1 and 2
+(single-cycle design and pipelined architecture) have been completed. The project now
+enters Phase 3 (FPGA synthesis and hardware testing).
+
+\begin{figure}[H]
+\centering
+
+\begin{ganttchart}[
+    expand chart=\textwidth,
+    vgrid,
+    hgrid,
+    y unit title=0.6cm,
+    y unit chart=0.6cm,
+    time slot format=simple,
+    title/.style={draw=none, fill=none},
+    title label font=\bfseries\small,
+    bar height=0.6,
+    bar label font=\scriptsize,
+    group label font=\bfseries\scriptsize,
+    bar label node/.append style={
+        text width=3cm,
+        align=center
+    }
+]{1}{60}
+
+% ---- Time Labels ----
+\gantttitle{January}{15}
+\gantttitle{February}{28}
+\gantttitle{March}{17} \\
+
+% ---- Phase 1: COMPLETED ----
+\ganttgroup{Phase 1: Single-Cycle (Done)}{1}{15} \\
+\ganttbar[bar/.style={fill=green!55,draw=none}]{Module Design}{1}{10} \\
+\ganttbar[bar/.style={fill=green!55,draw=none}]{Simulation \& Verify}{8}{15} \\
+
+% ---- Phase 2: COMPLETED ----
+\ganttgroup{Phase 2: Pipeline (Done)}{16}{30} \\
+\ganttbar[bar/.style={fill=green!55,draw=none}]{Pipeline Registers}{16}{22} \\
+\ganttbar[bar/.style={fill=green!55,draw=none}]{Hazard Unit}{21}{27} \\
+\ganttbar[bar/.style={fill=green!55,draw=none}]{Pipeline Verification}{27}{30} \\
+
+% ---- Phase 3: NEXT ----
+\ganttgroup{Phase 3: FPGA Implementation}{31}{45} \\
+\ganttbar[bar/.style={fill=orange!60,draw=none}]{Synthesis \& Timing}{31}{37} \\
+\ganttbar[bar/.style={fill=orange!60,draw=none}]{Board Testing}{37}{45} \\
+
+% ---- Phase 4: PLANNED ----
+\ganttgroup{Phase 4: Reporting}{46}{60} \\
+\ganttbar[bar/.style={fill=orange!60,draw=none}]{Final Documentation}{46}{55} \\
+
+\end{ganttchart}
+
+\caption{Updated Gantt Chart (Green = Completed, Orange = Remaining)}
+\label{fig:gantt_chart}
+\end{figure}
+
+
+\clearpage
+
+%================ REFERENCES ==================
+\renewcommand{\bibname}{References}
+
+\begin{thebibliography}{99}
+
+\bibitem{patterson}
+D. A. Patterson and J. L. Hennessy,
+\textit{Computer Organization and Design: The Hardware/Software Interface},
+5th ed., Morgan Kaufmann, 2014.
+
+\bibitem{harris}
+D. M. Harris and S. L. Harris,
+\textit{Digital Design and Computer Architecture: RISC-V Edition},
+Morgan Kaufmann, 2021.
+
+\bibitem{asanovic}
+K. Asanovi\'c and D. A. Patterson,
+``Instruction Sets Should Be Free: The Case for RISC-V,''
+EECS Department, University of California, Berkeley, Technical Report, 2014.
+
+\bibitem{hennessy}
+J. L. Hennessy and D. A. Patterson,
+``A New Golden Age for Computer Architecture,''
+\textit{Communications of the ACM},
+vol. 62, no. 2, pp. 48--60, 2019.
+
+\bibitem{riscv}
+A. Waterman, K. Asanovi\'c, et al.,
+\textit{The RISC-V Instruction Set Manual, Volume I: Unprivileged ISA},
+RISC-V International, 2019.
+
+\bibitem{pong}
+P. Pong and R. C. C. Cheung,
+``FPGA Implementation of a Pipelined RISC Processor,''
+\textit{IEEE Transactions on Very Large Scale Integration (VLSI) Systems},
+vol. 22, no. 3, pp. 605--618, 2014.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat May  9 14:44:58 2026
+# Process ID: 40093
+# Current directory: /home/jolly/Desktop/zybo_blink/zybo_blink.runs/impl_1
+# Command line: vivado -log blink.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source blink.tcl -notrace
+# Log file: /home/jolly/Desktop/zybo_blink/zybo_blink.runs/impl_1/blink.vdi
+# Journal file: /home/jolly/Desktop/zybo_blink/zybo_blink.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source blink.tcl -notrace

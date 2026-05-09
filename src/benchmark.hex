@@ -1,0 +1,29 @@
+// === Fibonacci Benchmark ===
+// Computes F(0)..F(9), stores to data memory
+// x1=a, x2=b, x3=temp, x4=counter, x5=limit, x6=store ptr
+//
+// Final: x2=34(F9), mem[0..9] = 0,1,1,2,3,5,8,13,21,34
+
+// --- Init ---
+00000093  // 0x00: addi x1, x0, 0       x1 = 0 (F0)
+00100113  // 0x04: addi x2, x0, 1       x2 = 1 (F1)
+00A00293  // 0x08: addi x5, x0, 10      x5 = 10 (limit)
+00200213  // 0x0C: addi x4, x0, 2       x4 = 2 (counter)
+00000313  // 0x10: addi x6, x0, 0       x6 = 0 (store ptr)
+
+// --- Store F(0) and F(1) ---
+00132023  // 0x14: sw   x1, 0(x6)       mem[0] = 0
+00232223  // 0x18: sw   x2, 4(x6)       mem[4] = 1
+00800313  // 0x1C: addi x6, x0, 8       x6 = 8 (next addr)
+
+// --- Loop (0x20): compute F(n) = F(n-1) + F(n-2) ---
+002081B3  // 0x20: add  x3, x1, x2      x3 = a + b
+00332023  // 0x24: sw   x3, 0(x6)       store F(n)
+00010093  // 0x28: addi x1, x2, 0       a = b
+00018113  // 0x2C: addi x2, x3, 0       b = x3
+00430313  // 0x30: addi x6, x6, 4       ptr += 4
+00120213  // 0x34: addi x4, x4, 1       counter++
+FE5214E3  // 0x38: bne  x4, x5, -24     if counter != 10, goto 0x20
+
+// --- Done: halt (jump-to-self) ---
+0000006F  // 0x3C: jal x0, 0       (infinite loop)

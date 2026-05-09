@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RV32I Pipelined Processor - Project Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-dark: #0a0e1a;
+    --bg-card: #111827;
+    --bg-card-alt: #1a2332;
+    --accent: #60a5fa;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f87171;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --border: #1e293b;
+    --gradient1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 40px 60px;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .slide.active { display: flex; flex-direction: column; }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .nav button {
+    background: rgba(96, 165, 250, 0.15);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .nav button:hover { background: rgba(96, 165, 250, 0.3); }
+  .slide-counter {
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .slide-number {
+    position: fixed;
+    bottom: 25px;
+    left: 30px;
+    color: var(--text-dim);
+    font-size: 13px;
+    z-index: 100;
+  }
+
+  /* Title Slide */
+  .title-slide {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 30%, rgba(96,165,250,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(167,139,250,0.06) 0%, transparent 50%),
+                var(--bg-dark);
+  }
+
+  .title-slide h1 {
+    font-size: 3.2em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .title-slide .subtitle {
+    font-size: 1.4em;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-bottom: 50px;
+  }
+
+  .team-grid {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .team-member {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 32px;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .team-member .name {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .team-member .id {
+    font-size: 0.85em;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .university {
+    margin-top: 40px;
+    color: var(--text-dim);
+    font-size: 0.95em;
+    line-height: 1.6;
+  }
+
+  /* Common Slide Styles */
+  .slide-header {
+    margin-bottom: 30px;
+    flex-shrink: 0;
+  }
+
+  .slide-header h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text);
+    position: relative;
+    display: inline-block;
+  }
+
+  .slide-header h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient1);
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  .slide-header .tag {
+    display: inline-block;
+    background: rgba(96,165,250,0.12);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .card h3 {
+    font-size: 1.05em;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .card p, .card li {
+    font-size: 0.92em;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .card ul { padding-left: 20px; }
+  .card li { margin-bottom: 4px; }
+
+  /* Grid Layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+
+  /* Flex row */
+  .flex-row { display: flex; gap: 20px; }
+  .flex-row > * { flex: 1; }
+
+  /* Code blocks */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    line-height: 1.7;
+    color: #c9d1d9;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .code-block .keyword { color: #ff7b72; }
+  .code-block .type { color: #79c0ff; }
+  .code-block .string { color: #a5d6ff; }
+  .code-block .comment { color: #8b949e; }
+  .code-block .number { color: #79c0ff; }
+  .code-block .signal { color: #d2a8ff; }
+
+  /* Tables */
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .data-table th {
+    background: rgba(96,165,250,0.1);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .data-table td {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 0.9em;
+    color: var(--text-dim);
+  }
+
+  .data-table tr:hover td { background: rgba(96,165,250,0.03); }
+
+  .data-table .highlight { color: var(--accent3); font-weight: 600; }
+  .data-table .warn { color: var(--accent4); font-weight: 600; }
+  .data-table .good { color: var(--accent3); font-weight: 600; }
+
+  /* Metric Cards */
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .metric-card .value {
+    font-size: 2.4em;
+    font-weight: 800;
+    background: var(--gradient3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+  }
+
+  .metric-card .label {
+    font-size: 0.82em;
+    color: var(--text-dim);
+    margin-top: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .metric-card.accent2 .value {
+    background: var(--gradient1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .metric-card.accent3 .value {
+    background: linear-gradient(135deg, #fb923c, #f87171);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Pipeline Diagram */
+  .pipeline-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 20px 0;
+  }
+
+  .pipe-stage {
+    background: var(--bg-card);
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 18px 22px;
+    text-align: center;
+    min-width: 130px;
+    position: relative;
+  }
+
+  .pipe-stage .stage-name {
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-bottom: 4px;
+  }
+
+  .pipe-stage .stage-desc {
+    font-size: 0.75em;
+    color: var(--text-dim);
+  }
+
+  .pipe-arrow {
+    font-size: 1.5em;
+    color: var(--text-dim);
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .pipe-reg {
+    background: rgba(167,139,250,0.1);
+    border: 1px dashed var(--accent2);
+    border-radius: 6px;
+    padding: 6px 6px;
+    font-size: 0.65em;
+    color: var(--accent2);
+    font-weight: 600;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    letter-spacing: 1px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .s-if { border-color: #60a5fa; }
+  .s-if .stage-name { color: #60a5fa; }
+  .s-id { border-color: #a78bfa; }
+  .s-id .stage-name { color: #a78bfa; }
+  .s-ex { border-color: #34d399; }
+  .s-ex .stage-name { color: #34d399; }
+  .s-mem { border-color: #fb923c; }
+  .s-mem .stage-name { color: #fb923c; }
+  .s-wb { border-color: #f87171; }
+  .s-wb .stage-name { color: #f87171; }
+
+  /* Bar Chart */
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+    height: 200px;
+    padding: 0 40px;
+    margin-top: 10px;
+  }
+
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .bar {
+    width: 60px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.5s;
+    position: relative;
+  }
+
+  .bar .bar-value {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85em;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .bar-label {
+    margin-top: 10px;
+    font-size: 0.78em;
+    color: var(--text-dim);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* Horizontal bar chart */
+  .h-bar-chart { display: flex; flex-direction: column; gap: 14px; }
+
+  .h-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .h-bar-label {
+    min-width: 140px;
+    text-align: right;
+    font-size: 0.85em;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .h-bar-track {
+    flex: 1;
+    height: 30px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .h-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #fff;
+    transition: width 0.6s ease;
+  }
+
+  /* Highlight boxes */
+  .highlight-box {
+    border-left: 3px solid var(--accent);
+    background: rgba(96,165,250,0.06);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9em;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  .highlight-box strong { color: var(--text); }
+
+  .highlight-box.green {
+    border-left-color: var(--accent3);
+    background: rgba(52,211,153,0.06);
+  }
+
+  .highlight-box.orange {
+    border-left-color: var(--accent4);
+    background: rgba(251,146,60,0.06);
+  }
+
+  .highlight-box.red {
+    border-left-color: var(--accent5);
+    background: rgba(248,113,113,0.06);
+  }
+
+  /* Timing diagram */
+  .timing-grid {
+    display: grid;
+    grid-template-columns: auto repeat(9, 1fr);
+    gap: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78em;
+  }
+
+  .timing-cell {
+    padding: 8px 12px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .timing-header {
+    color: var(--text-dim);
+    font-weight: 500;
+    padding: 6px 8px;
+  }
+
+  .timing-label {
+    text-align: right;
+    padding-right: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.85em;
+  }
+
+  .t-if { background: rgba(96,165,250,0.2); color: #60a5fa; }
+  .t-id { background: rgba(167,139,250,0.2); color: #a78bfa; }
+  .t-ex { background: rgba(52,211,153,0.2); color: #34d399; }
+  .t-mem { background: rgba(251,146,60,0.2); color: #fb923c; }
+  .t-wb { background: rgba(248,113,113,0.2); color: #f87171; }
+  .t-empty { background: transparent; }
+  .t-stall { background: rgba(248,113,113,0.15); color: #f87171; font-style: italic; }
+  .t-flush { background: rgba(251,146,60,0.12); color: #fb923c; font-style: italic; }
+
+  /* Image container */
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+
+  .img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* Bullet list styling */
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 0.95em;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .bullet-list li strong { color: var(--text); }
+
+  /* Module cards */
+  .module-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-top: 3px solid;
+  }
+
+  .module-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .module-card p {
+    font-size: 0.8em;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Forwarding diagram SVG */
+  .fwd-diagram { width: 100%; max-width: 900px; margin: 0 auto; }
+
+  /* ISA badge grid */
+  .isa-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .isa-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78em;
+    font-weight: 600;
+    border: 1px solid;
+  }
+
+  .isa-badge.r { background: rgba(96,165,250,0.1); border-color: rgba(96,165,250,0.3); color: #60a5fa; }
+  .isa-badge.i { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.3); color: #a78bfa; }
+  .isa-badge.s { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.3); color: #34d399; }
+  .isa-badge.b { background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.3); color: #fb923c; }
+  .isa-badge.u { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.3); color: #f87171; }
+  .isa-badge.j { background: rgba(236,72,153,0.1); border-color: rgba(236,72,153,0.3); color: #ec4899; }
+
+  /* Pie chart (CSS) */
+  .pie-container { display: flex; align-items: center; gap: 30px; justify-content: center; }
+
+  .pie {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .pie-legend { display: flex; flex-direction: column; gap: 10px; }
+  .pie-legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.88em; color: var(--text-dim); }
+  .pie-legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* Conclusion slide */
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .conclusion-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px;
+    border-left: 4px solid;
+  }
+
+  .conclusion-card h3 {
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .conclusion-card p, .conclusion-card li {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .conclusion-card ul { padding-left: 18px; }
+  .conclusion-card li { margin-bottom: 3px; }
+
+  /* Responsive text */
+  .text-sm { font-size: 0.88em; }
+  .text-xs { font-size: 0.78em; }
+  .text-dim { color: var(--text-dim); }
+  .text-accent { color: var(--accent); }
+  .text-green { color: var(--accent3); }
+  .text-orange { color: var(--accent4); }
+  .text-red { color: var(--accent5); }
+  .fw-600 { font-weight: 600; }
+  .fw-700 { font-weight: 700; }
+  .mt-10 { margin-top: 10px; }
+  .mt-20 { margin-top: 20px; }
+  .mb-10 { margin-bottom: 10px; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Image placeholders with descriptive diagrams */
+  .arch-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .arch-diagram img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  /* Keyboard shortcut hint */
+  .kbd-hint {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-dim);
+    font-size: 0.72em;
+    opacity: 0.5;
+    z-index: 100;
+  }
+
+  kbd {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: TITLE ==================== -->
+<div class="slide title-slide active" id="slide1">
+  <div>
+    <div style="margin-bottom: 16px;">
+      <img src="https://riscv.org/wp-content/uploads/2024/02/RISC-V-logo-square.png" alt="RISC-V" style="height: 80px; border-radius: 12px; opacity:0.9;" onerror="this.style.display='none'">
+    </div>
+    <h1>Design & Implementation of a<br>5-Stage Pipelined RV32I Processor</h1>
+    <p class="subtitle">RISC-V Base Integer Instruction Set in Verilog HDL</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-member">
+      <div class="name">Adesh Pandey</div>
+      <div class="id">079BEI004</div>
+    </div>
+    <div class="team-member">
+      <div class="name">Aayush Gelal</div>
+      <div class="id">079BEI002</div>
+    </div>
+    <div class="team-member">
+      <div class="name">Bishesh Paudel</div>
+      <div class="id">079BEI016</div>
+    </div>
+  </div>
+  <div class="university">
+    Tribhuvan University &middot; Institute of Engineering &middot; Pulchowk Campus<br>
+    Department of Electronics & Computer Engineering &middot; March 2026
+  </div>
+</div>
+
+<!-- ==================== SLIDE 2: INTRODUCTION ==================== -->
+<div class="slide" id="slide2">
+  <div class="slide-header">
+    <div class="tag">Introduction</div>
+    <h2>Why RISC-V? Why Pipelining?</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>RISC-V: The Open Standard ISA</h3>
+          <ul class="bullet-list">
+            <li><strong>Open & free</strong> &mdash; no licensing fees, unlike ARM or x86</li>
+            <li><strong>Modular design</strong> &mdash; base integer set (RV32I) + optional extensions</li>
+            <li><strong>Industry adoption</strong> &mdash; used by SiFive, Google, NVIDIA, Qualcomm</li>
+            <li><strong>Academic standard</strong> &mdash; clean ISA ideal for teaching architecture</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Why Pipelining?</h3>
+          <ul class="bullet-list">
+            <li><strong>Throughput boost</strong> &mdash; overlap execution of multiple instructions</li>
+            <li><strong>Higher clock speed</strong> &mdash; shorter critical path per stage</li>
+            <li><strong>Real-world relevance</strong> &mdash; all modern CPUs are pipelined</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="height: 100%;">
+          <h3>Project Objectives</h3>
+          <ul class="bullet-list">
+            <li>Implement <strong>full RV32I</strong> base instruction set (37 instructions)</li>
+            <li>Build a <strong>5-stage pipeline</strong> with forwarding & hazard detection</li>
+            <li>Evolve from <strong>single-cycle &rarr; pipelined</strong> architecture</li>
+            <li>Add <strong>performance counters</strong> for quantitative analysis</li>
+            <li>Benchmark with real programs and <strong>compare CPI</strong></li>
+            <li>Verify with comprehensive <strong>testbenches</strong></li>
+          </ul>
+          <div class="highlight-box mt-20">
+            <strong>Key Insight:</strong> A 5-stage pipeline can achieve <strong>~4.4x throughput improvement</strong> over single-cycle, despite a ~14% CPI penalty from hazards.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 3: RV32I ISA ==================== -->
+<div class="slide" id="slide3">
+  <div class="slide-header">
+    <div class="tag">Instruction Set</div>
+    <h2>RV32I Base Integer Instructions</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2" style="margin-bottom: 16px;">
+      <div>
+        <div class="card">
+          <h3>37 Instructions Implemented</h3>
+          <div style="margin-top: 12px;">
+            <p class="text-sm fw-600 mb-10" style="color:#60a5fa;">R-Type (Register-Register) &mdash; 10 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge r">ADD</span><span class="isa-badge r">SUB</span><span class="isa-badge r">SLL</span><span class="isa-badge r">SLT</span><span class="isa-badge r">SLTU</span>
+              <span class="isa-badge r">XOR</span><span class="isa-badge r">SRL</span><span class="isa-badge r">SRA</span><span class="isa-badge r">OR</span><span class="isa-badge r">AND</span>
+            </div>
+            <p class="text-sm fw-600 mb-10 mt-20" style="color:#a78bfa;">I-Type (Immediate) &mdash; 9 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge i">ADDI</span><span class="isa-badge i">SLTI</span><span class="isa-badge i">SLTIU</span><span class="isa-badge i">XORI</span><span class="isa-badge i">ORI</span>
+              <span class="isa-badge i">ANDI</span><span class="isa-badge i">SLLI</span><span class="isa-badge i">SRLI</span><span class="isa-badge i">SRAI</span>
+            </div>
+            <p class="text-sm fw-600 mb-10 mt-20" style="color:#34d399;">Load / Store &mdash; 2 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge s">LW</span><span class="isa-badge s">SW</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Branch, Jump & Upper Immediate</h3>
+          <div style="margin-top: 12px;">
+            <p class="text-sm fw-600 mb-10" style="color:#fb923c;">B-Type (Branch) &mdash; 6 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge b">BEQ</span><span class="isa-badge b">BNE</span><span class="isa-badge b">BLT</span><span class="isa-badge b">BGE</span><span class="isa-badge b">BLTU</span><span class="isa-badge b">BGEU</span>
+            </div>
+            <p class="text-sm fw-600 mb-10 mt-20" style="color:#ec4899;">J-Type (Jump) &mdash; 2 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge j">JAL</span><span class="isa-badge j">JALR</span>
+            </div>
+            <p class="text-sm fw-600 mb-10 mt-20" style="color:#f87171;">U-Type (Upper Immediate) &mdash; 2 instructions</p>
+            <div class="isa-badges">
+              <span class="isa-badge u">LUI</span><span class="isa-badge u">AUIPC</span>
+            </div>
+          </div>
+          <div class="highlight-box mt-20">
+            <strong>6 instruction formats:</strong> R, I, S, B, U, J &mdash; all decoded by a single combinational control unit with opcode/funct3/funct7 inputs.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Instruction Format Encoding</h3>
+      <div class="code-block" style="font-size:0.76em; line-height:1.5;"><span class="comment">  31        25 24    20 19    15 14  12 11     7 6      0</span>
+<span class="keyword">R:</span> [ funct7   ] [ rs2  ] [ rs1  ] [f3 ] [ rd    ] [opcode ]  &larr; ADD, SUB, AND, OR ...
+<span class="keyword">I:</span> [ imm[11:0]         ] [ rs1  ] [f3 ] [ rd    ] [opcode ]  &larr; ADDI, LW, JALR
+<span class="keyword">S:</span> [ imm[11:5]] [ rs2  ] [ rs1  ] [f3 ] [imm4:0 ] [opcode ]  &larr; SW
+<span class="keyword">B:</span> [imm[12|10:5]] [rs2 ] [ rs1  ] [f3 ] [im4:1|11][opcode ]  &larr; BEQ, BNE ...
+<span class="keyword">U:</span> [ imm[31:12]                  ] [ rd    ] [opcode ]  &larr; LUI, AUIPC
+<span class="keyword">J:</span> [imm[20|10:1|11|19:12]       ] [ rd    ] [opcode ]  &larr; JAL</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 4: SINGLE-CYCLE BASELINE ==================== -->
+<div class="slide" id="slide4">
+  <div class="slide-header">
+    <div class="tag">Architecture</div>
+    <h2>Single-Cycle Baseline</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>How Single-Cycle Works</h3>
+          <ul class="bullet-list">
+            <li>Each instruction completes in <strong>one clock cycle</strong></li>
+            <li>All hardware (ALU, memory, registers) used <strong>sequentially</strong> in one cycle</li>
+            <li>Clock period = <strong>longest instruction</strong> delay path</li>
+            <li>CPI is always <strong>1.0</strong> by definition</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>The Problem</h3>
+          <div class="highlight-box orange">
+            <strong>Critical path bottleneck:</strong> The clock must be slow enough for the slowest instruction (typically LW: PC &rarr; IMEM &rarr; RegFile &rarr; ALU &rarr; DMEM &rarr; RegFile). Every instruction pays this penalty, even simple ones like ADD.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="height: 100%;">
+          <h3>Single-Cycle Datapath</h3>
+          <div style="margin: 10px 0;">
+            <svg viewBox="0 0 580 280" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+              <!-- PC -->
+              <rect x="10" y="110" width="60" height="50" rx="6" fill="#1a2332" stroke="#60a5fa" stroke-width="1.5"/>
+              <text x="40" y="140" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="600">PC</text>
+              <!-- IMEM -->
+              <rect x="90" y="90" width="70" height="90" rx="6" fill="#1a2332" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="125" y="132" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="600">IMEM</text>
+              <text x="125" y="150" text-anchor="middle" fill="#94a3b8" font-size="9">64x32</text>
+              <!-- RegFile -->
+              <rect x="180" y="80" width="70" height="110" rx="6" fill="#1a2332" stroke="#34d399" stroke-width="1.5"/>
+              <text x="215" y="128" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">RegFile</text>
+              <text x="215" y="145" text-anchor="middle" fill="#94a3b8" font-size="9">32x32</text>
+              <!-- ALU -->
+              <rect x="280" y="100" width="65" height="70" rx="6" fill="#1a2332" stroke="#fb923c" stroke-width="1.5"/>
+              <text x="313" y="140" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="600">ALU</text>
+              <!-- DMEM -->
+              <rect x="370" y="90" width="70" height="90" rx="6" fill="#1a2332" stroke="#f87171" stroke-width="1.5"/>
+              <text x="405" y="132" text-anchor="middle" fill="#f87171" font-size="12" font-weight="600">DMEM</text>
+              <text x="405" y="150" text-anchor="middle" fill="#94a3b8" font-size="9">64x32</text>
+              <!-- WB Mux -->
+              <rect x="465" y="110" width="55" height="50" rx="6" fill="#1a2332" stroke="#ec4899" stroke-width="1.5"/>
+              <text x="493" y="133" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="600">WB</text>
+              <text x="493" y="148" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="600">Mux</text>
+              <!-- Arrows -->
+              <line x1="70" y1="135" x2="90" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="160" y1="135" x2="180" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="250" y1="135" x2="280" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="345" y1="135" x2="370" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+              <line x1="440" y1="135" x2="465" y2="135" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+              <!-- WB path back -->
+              <path d="M520 135 L545 135 L545 240 L215 240 L215 190" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3" fill="none" marker-end="url(#arr2)"/>
+              <text x="380" y="255" text-anchor="middle" fill="#ec4899" font-size="9" font-weight="500">Write Back</text>
+              <!-- Critical path label -->
+              <rect x="100" y="20" width="360" height="26" rx="4" fill="rgba(248,113,113,0.1)" stroke="rgba(248,113,113,0.3)" stroke-width="1"/>
+              <text x="280" y="37" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">T_critical = T_pc + T_imem + T_reg + T_alu + T_dmem + T_mux</text>
+              <defs>
+                <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#475569"/></marker>
+                <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ec4899"/></marker>
+              </defs>
+            </svg>
+          </div>
+          <p class="text-sm text-dim" style="text-align:center; margin-top:8px;">All components used combinationally in a single long cycle</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 5: 5-STAGE PIPELINE ==================== -->
+<div class="slide" id="slide5">
+  <div class="slide-header">
+    <div class="tag">Architecture</div>
+    <h2>5-Stage Pipeline Architecture</h2>
+  </div>
+  <div class="content-area">
+    <div class="pipeline-diagram">
+      <div class="pipe-stage s-if">
+        <div class="stage-name">IF</div>
+        <div class="stage-desc">Instruction<br>Fetch</div>
+      </div>
+      <div class="pipe-reg">IF/ID</div>
+      <div class="pipe-stage s-id">
+        <div class="stage-name">ID</div>
+        <div class="stage-desc">Instruction<br>Decode</div>
+      </div>
+      <div class="pipe-reg">ID/EX</div>
+      <div class="pipe-stage s-ex">
+        <div class="stage-name">EX</div>
+        <div class="stage-desc">Execute /<br>Branch</div>
+      </div>
+      <div class="pipe-reg">EX/MEM</div>
+      <div class="pipe-stage s-mem">
+        <div class="stage-name">MEM</div>
+        <div class="stage-desc">Memory<br>Access</div>
+      </div>
+      <div class="pipe-reg">MEM/WB</div>
+      <div class="pipe-stage s-wb">
+        <div class="stage-name">WB</div>
+        <div class="stage-desc">Write<br>Back</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:10px;">
+      <div>
+        <div class="card">
+          <h3>Stage Functions</h3>
+          <table class="data-table">
+            <tr><th>Stage</th><th>Operations</th><th>Key Modules</th></tr>
+            <tr><td class="fw-600" style="color:#60a5fa">IF</td><td>Fetch instruction at PC, compute PC+4</td><td class="mono text-xs">pc, imem, pc_adder</td></tr>
+            <tr><td class="fw-600" style="color:#a78bfa">ID</td><td>Decode opcode, read registers, gen immediate</td><td class="mono text-xs">control, regfile, imm_gen</td></tr>
+            <tr><td class="fw-600" style="color:#34d399">EX</td><td>ALU operation, branch decision, target calc</td><td class="mono text-xs">alu, forwarding mux</td></tr>
+            <tr><td class="fw-600" style="color:#fb923c">MEM</td><td>Load/Store data memory access</td><td class="mono text-xs">dmem</td></tr>
+            <tr><td class="fw-600" style="color:#f87171">WB</td><td>Select result and write to register file</td><td class="mono text-xs">result mux, regfile</td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Pipeline Registers</h3>
+          <table class="data-table">
+            <tr><th>Register</th><th>Width</th><th>Key Fields</th></tr>
+            <tr><td class="mono fw-600" style="color:#a78bfa">IF/ID</td><td>~67 bits</td><td>instruction, PC, PC+4</td></tr>
+            <tr><td class="mono fw-600" style="color:#34d399">ID/EX</td><td>~180 bits</td><td>controls, rd1, rd2, imm, rs1, rs2, rd</td></tr>
+            <tr><td class="mono fw-600" style="color:#fb923c">EX/MEM</td><td>~103 bits</td><td>ALU result, write data, rd, controls</td></tr>
+            <tr><td class="mono fw-600" style="color:#f87171">MEM/WB</td><td>~104 bits</td><td>ALU result, mem data, rd, controls</td></tr>
+          </table>
+          <div class="highlight-box green mt-10">
+            <strong>Key advantage:</strong> Each stage is now 1/5 of the critical path &rarr; clock can run <strong>~5x faster</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 6: PIPELINE TIMING ==================== -->
+<div class="slide" id="slide6">
+  <div class="slide-header">
+    <div class="tag">Architecture</div>
+    <h2>Pipeline Timing &amp; Instruction Overlap</h2>
+  </div>
+  <div class="content-area">
+    <div class="card" style="margin-bottom: 20px;">
+      <h3>Ideal Pipeline Execution (No Hazards)</h3>
+      <p class="text-sm text-dim mb-10">Multiple instructions execute simultaneously, each in a different stage:</p>
+      <div class="timing-grid">
+        <div class="timing-header"></div>
+        <div class="timing-header">CC1</div><div class="timing-header">CC2</div><div class="timing-header">CC3</div>
+        <div class="timing-header">CC4</div><div class="timing-header">CC5</div><div class="timing-header">CC6</div>
+        <div class="timing-header">CC7</div><div class="timing-header">CC8</div><div class="timing-header">CC9</div>
+
+        <div class="timing-label">INSTR 1</div>
+        <div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div><div class="timing-cell t-ex">EX</div>
+        <div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+        <div class="timing-label">INSTR 2</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div>
+        <div class="timing-cell t-ex">EX</div><div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+        <div class="timing-label">INSTR 3</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-if">IF</div>
+        <div class="timing-cell t-id">ID</div><div class="timing-cell t-ex">EX</div><div class="timing-cell t-mem">MEM</div>
+        <div class="timing-cell t-wb">WB</div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+        <div class="timing-label">INSTR 4</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+        <div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div><div class="timing-cell t-ex">EX</div>
+        <div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div><div class="timing-cell t-empty"></div>
+
+        <div class="timing-label">INSTR 5</div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+        <div class="timing-cell t-empty"></div><div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div>
+        <div class="timing-cell t-ex">EX</div><div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Throughput Comparison</h3>
+        <div style="margin-top:12px;">
+          <div class="h-bar-chart">
+            <div class="h-bar-row">
+              <div class="h-bar-label">Single-Cycle</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:20%; background: linear-gradient(90deg, #f87171, #fb923c);">1x</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">5-Stage Pipeline<br><span class="text-xs">(ideal CPI=1)</span></div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:100%; background: linear-gradient(90deg, #34d399, #60a5fa);">5x clock &rarr; 5x throughput</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">5-Stage Pipeline<br><span class="text-xs">(real CPI=1.14)</span></div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:88%; background: linear-gradient(90deg, #60a5fa, #a78bfa);">~4.4x effective throughput</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Why Not Perfect 5x?</h3>
+        <ul class="bullet-list">
+          <li><strong>Pipeline hazards</strong> introduce stalls and flushes</li>
+          <li><strong>Data hazards:</strong> instruction depends on result not yet available</li>
+          <li><strong>Control hazards:</strong> branch decision not known until EX stage</li>
+          <li><strong>Pipeline fill/drain:</strong> startup & shutdown overhead</li>
+        </ul>
+        <div class="highlight-box mt-10">
+          Effective speedup = <strong>N / CPI</strong> where N = pipeline depth (5).<br>
+          With CPI = 1.14: speedup = 5 / 1.14 = <strong>4.39x</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 7: MODULES ==================== -->
+<div class="slide" id="slide7">
+  <div class="slide-header">
+    <div class="tag">Design</div>
+    <h2>Hardware Module Breakdown</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-3">
+      <div class="module-card" style="border-top-color: #60a5fa;">
+        <h4 style="color:#60a5fa;">pc.v</h4>
+        <p>32-bit program counter with synchronous reset and enable input for stall control. Holds value when stalled.</p>
+        <p class="mt-10 mono text-xs" style="color:#60a5fa;">16 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #60a5fa;">
+        <h4 style="color:#60a5fa;">pc_adder.v</h4>
+        <p>Simple combinational adder: PC + 4 for sequential instruction fetch.</p>
+        <p class="mt-10 mono text-xs" style="color:#60a5fa;">7 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #a78bfa;">
+        <h4 style="color:#a78bfa;">imem.v</h4>
+        <p>64-word instruction memory. NOP-initialized to prevent X-propagation. Loads from .hex file.</p>
+        <p class="mt-10 mono text-xs" style="color:#a78bfa;">15 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #a78bfa;">
+        <h4 style="color:#a78bfa;">control.v</h4>
+        <p>Combinational decoder: opcode + funct3 + funct7 &rarr; 10 control signals. Supports all 37 RV32I instructions.</p>
+        <p class="mt-10 mono text-xs" style="color:#a78bfa;">133 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #34d399;">
+        <h4 style="color:#34d399;">regfile.v</h4>
+        <p>32x32 register file. 2 async read, 1 sync write. x0 hardwired to zero. Write-through bypass for WB&rarr;ID.</p>
+        <p class="mt-10 mono text-xs" style="color:#34d399;">24 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #34d399;">
+        <h4 style="color:#34d399;">imm_gen.v</h4>
+        <p>Generates sign-extended immediates for all 6 instruction formats: I, S, B, J, U types.</p>
+        <p class="mt-10 mono text-xs" style="color:#34d399;">33 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #fb923c;">
+        <h4 style="color:#fb923c;">alu.v</h4>
+        <p>10-operation ALU: ADD, SUB, AND, OR, XOR, SLT, SLTU, SLL, SRL, SRA. Plus zero flag output.</p>
+        <p class="mt-10 mono text-xs" style="color:#fb923c;">27 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #fb923c;">
+        <h4 style="color:#fb923c;">dmem.v</h4>
+        <p>64-word data memory. Async read, sync write. Word-addressed via a[31:2].</p>
+        <p class="mt-10 mono text-xs" style="color:#fb923c;">18 lines</p>
+      </div>
+      <div class="module-card" style="border-top-color: #f87171;">
+        <h4 style="color:#f87171;">top.v</h4>
+        <p>Top-level pipeline: 4 pipeline registers, forwarding logic, hazard detection, stall/flush control, performance counters.</p>
+        <p class="mt-10 mono text-xs" style="color:#f87171;">401 lines</p>
+      </div>
+    </div>
+    <div class="card mt-10" style="text-align:center;">
+      <span class="text-sm text-dim">Total: <strong style="color:var(--accent)">9 modules</strong> &middot; <strong style="color:var(--accent)">674 lines</strong> of Verilog &middot; <strong style="color:var(--accent)">4 testbenches</strong> &middot; <strong style="color:var(--accent)">227 lines</strong> of test code</span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 8: PIPELINE HAZARDS ==================== -->
+<div class="slide" id="slide8">
+  <div class="slide-header">
+    <div class="tag">Hazards</div>
+    <h2>Pipeline Hazards Overview</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-3" style="margin-bottom: 20px;">
+      <div class="card" style="border-left: 3px solid #60a5fa;">
+        <h3 style="color:#60a5fa;">Data Hazards (RAW)</h3>
+        <p>An instruction needs a register value that a previous instruction hasn't written back yet.</p>
+        <div class="code-block mt-10" style="font-size:0.75em;"><span class="keyword">ADD</span>  x1, x2, x3   <span class="comment">// writes x1</span>
+<span class="keyword">SUB</span>  x4, <span class="signal">x1</span>, x5   <span class="comment">// reads x1 (not ready!)</span></div>
+        <p class="mt-10 text-sm"><strong class="text-accent">Solution:</strong> Data forwarding + load-use stall</p>
+      </div>
+      <div class="card" style="border-left: 3px solid #fb923c;">
+        <h3 style="color:#fb923c;">Control Hazards</h3>
+        <p>Branch outcome unknown until EX stage &mdash; wrong instructions may have entered pipeline.</p>
+        <div class="code-block mt-10" style="font-size:0.75em;"><span class="keyword">BEQ</span>  x1, x2, target
+<span class="comment">// next 2 instrs already fetched</span>
+<span class="comment">// must be flushed if taken</span></div>
+        <p class="mt-10 text-sm"><strong class="text-orange">Solution:</strong> Pipeline flush (2-cycle penalty)</p>
+      </div>
+      <div class="card" style="border-left: 3px solid #f87171;">
+        <h3 style="color:#f87171;">Load-Use Hazard</h3>
+        <p>Special case: load result only available after MEM stage, but next instruction needs it in EX.</p>
+        <div class="code-block mt-10" style="font-size:0.75em;"><span class="keyword">LW</span>   x6, 0(x0)    <span class="comment">// data at MEM</span>
+<span class="keyword">ADDI</span> x7, <span class="signal">x6</span>, 1    <span class="comment">// needs x6 in EX</span>
+<span class="comment">// cannot forward: 1-cycle stall</span></div>
+        <p class="mt-10 text-sm"><strong class="text-red">Solution:</strong> 1-cycle stall + MEM/WB forward</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hazard Resolution Strategy</h3>
+      <div class="grid-2 mt-10">
+        <div>
+          <table class="data-table">
+            <tr><th>Hazard Type</th><th>Detection</th><th>Resolution</th><th>Penalty</th></tr>
+            <tr>
+              <td>RAW (1-gap)</td>
+              <td class="text-xs">EX/MEM.rd == ID/EX.rs1/rs2</td>
+              <td class="good">Forward from EX/MEM</td>
+              <td class="good">0 cycles</td>
+            </tr>
+            <tr>
+              <td>RAW (2-gap)</td>
+              <td class="text-xs">MEM/WB.rd == ID/EX.rs1/rs2</td>
+              <td class="good">Forward from MEM/WB</td>
+              <td class="good">0 cycles</td>
+            </tr>
+            <tr>
+              <td>RAW (3-gap)</td>
+              <td class="text-xs">WB.rd == ID.rs1/rs2 same cycle</td>
+              <td class="good">Register write-through</td>
+              <td class="good">0 cycles</td>
+            </tr>
+            <tr>
+              <td>Load-Use</td>
+              <td class="text-xs">ID/EX.memRead &amp;&amp; rd match</td>
+              <td class="warn">Stall 1 + forward</td>
+              <td class="warn">1 cycle</td>
+            </tr>
+            <tr>
+              <td>Branch taken</td>
+              <td class="text-xs">Branch resolved in EX</td>
+              <td class="warn">Flush IF/ID + ID/EX</td>
+              <td class="warn">2 cycles</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <div class="highlight-box green">
+            <strong>4 out of 5 hazard types resolved with ZERO penalty</strong> thanks to the forwarding unit. Only load-use requires a 1-cycle stall, and branches cost 2 cycles when taken.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 9: DATA FORWARDING ==================== -->
+<div class="slide" id="slide9">
+  <div class="slide-header">
+    <div class="tag">Hazards</div>
+    <h2>Data Forwarding Unit</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Forwarding Paths</h3>
+          <svg viewBox="0 0 500 300" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pipeline stages -->
+            <rect x="20" y="60" width="90" height="50" rx="6" fill="#1a2332" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="65" y="90" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="700">ID</text>
+
+            <rect x="145" y="60" width="90" height="50" rx="6" fill="#1a2332" stroke="#34d399" stroke-width="1.5"/>
+            <text x="190" y="90" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700">EX</text>
+
+            <rect x="270" y="60" width="90" height="50" rx="6" fill="#1a2332" stroke="#fb923c" stroke-width="1.5"/>
+            <text x="315" y="90" text-anchor="middle" fill="#fb923c" font-size="14" font-weight="700">MEM</text>
+
+            <rect x="395" y="60" width="90" height="50" rx="6" fill="#1a2332" stroke="#f87171" stroke-width="1.5"/>
+            <text x="440" y="90" text-anchor="middle" fill="#f87171" font-size="14" font-weight="700">WB</text>
+
+            <!-- Forwarding MUX -->
+            <rect x="155" y="150" width="70" height="35" rx="6" fill="rgba(96,165,250,0.15)" stroke="#60a5fa" stroke-width="1.5"/>
+            <text x="190" y="172" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="600">FWD MUX</text>
+
+            <!-- Forward from EX/MEM (1-gap) -->
+            <path d="M315 110 L315 200 L200 200 L200 185" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arr3)"/>
+            <text x="260" y="218" text-anchor="middle" fill="#34d399" font-size="9" font-weight="600">EX/MEM Forward (1-gap, 0 penalty)</text>
+
+            <!-- Forward from MEM/WB (2-gap) -->
+            <path d="M440 110 L440 240 L200 240 L200 185" stroke="#fb923c" stroke-width="2" fill="none" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
+            <text x="320" y="258" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="600">MEM/WB Forward (2-gap, 0 penalty)</text>
+
+            <!-- Normal path -->
+            <line x1="110" y1="85" x2="145" y2="85" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="235" y1="85" x2="270" y2="85" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="360" y1="85" x2="395" y2="85" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <!-- MUX to EX -->
+            <line x1="190" y1="150" x2="190" y2="110" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+            <defs>
+              <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#34d399"/></marker>
+              <marker id="arr4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb923c"/></marker>
+              <marker id="arr5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#60a5fa"/></marker>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Forwarding Control Logic</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Forward A (ALU src1)</span>
+<span class="keyword">assign</span> <span class="signal">forward_a</span> =
+  <span class="comment">// EX/MEM hazard (1-gap)</span>
+  (ex_mem_reg_write && ex_mem_rd != 0
+   && ex_mem_rd == id_ex_rs1)
+    ? <span class="number">2'b10</span> :
+  <span class="comment">// MEM/WB hazard (2-gap)</span>
+  (mem_wb_reg_write && mem_wb_rd != 0
+   && mem_wb_rd == id_ex_rs1)
+    ? <span class="number">2'b01</span> :
+  <span class="comment">// No hazard</span>
+    <span class="number">2'b00</span>;
+
+<span class="comment">// Forward B (ALU src2) — same logic</span>
+<span class="comment">// with id_ex_rs2 instead</span></div>
+        </div>
+        <div class="card">
+          <h3>Write-Through Bypass (3-gap)</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// In regfile.v — handles WB→ID</span>
+<span class="keyword">assign</span> rd1 =
+  (a1 == 0) ? <span class="number">32'b0</span> :
+  (we3 && a3 == a1 && a3 != <span class="number">5'b0</span>)
+    ? wd3 : rf[a1];</div>
+          <p class="text-xs text-dim mt-10">Bug fix: without this, a 3-instruction gap would read stale register data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 10: STALL & FLUSH ==================== -->
+<div class="slide" id="slide10">
+  <div class="slide-header">
+    <div class="tag">Hazards</div>
+    <h2>Load-Use Stalls &amp; Branch Flushes</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>Load-Use Stall Mechanism</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Detect load-use hazard</span>
+<span class="keyword">wire</span> <span class="signal">load_use_hazard</span> =
+  id_ex_result_src == <span class="number">2'b01</span>  <span class="comment">// load in EX</span>
+  && (id_ex_rd == if_id_rs1
+   || id_ex_rd == if_id_rs2)
+  && id_ex_rd != <span class="number">0</span>;
+
+<span class="comment">// Stall action:</span>
+<span class="comment">// 1. Freeze PC   (don't fetch next)</span>
+<span class="comment">// 2. Hold IF/ID  (re-decode same instr)</span>
+<span class="comment">// 3. Insert NOP in ID/EX (bubble)</span></div>
+        </div>
+        <div class="card">
+          <h3>Stall Timing</h3>
+          <div class="timing-grid" style="grid-template-columns: auto repeat(7, 1fr);">
+            <div class="timing-header"></div>
+            <div class="timing-header">1</div><div class="timing-header">2</div><div class="timing-header">3</div>
+            <div class="timing-header">4</div><div class="timing-header">5</div><div class="timing-header">6</div><div class="timing-header">7</div>
+
+            <div class="timing-label">LW x6, 0(x0)</div>
+            <div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div><div class="timing-cell t-ex">EX</div>
+            <div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+            <div class="timing-label">ADDI x7, x6, 1</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div>
+            <div class="timing-cell t-stall">stall</div><div class="timing-cell t-ex">EX</div>
+            <div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+          </div>
+          <p class="text-xs text-dim mt-10" style="text-align:center;">After stall, data is forwarded from MEM/WB &rarr; EX (cost: 1 cycle)</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>Branch Flush Mechanism</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Branch resolved in EX stage</span>
+<span class="keyword">wire</span> <span class="signal">branch_taken</span> =
+  (id_ex_branch && alu_zero)   <span class="comment">// BEQ</span>
+  || id_ex_jump                <span class="comment">// JAL</span>
+  || id_ex_jalr;               <span class="comment">// JALR</span>
+
+<span class="keyword">wire</span> <span class="signal">flush</span> = branch_taken;
+
+<span class="comment">// Flush action:</span>
+<span class="comment">// 1. Zero out IF/ID register (NOP)</span>
+<span class="comment">// 2. Zero out ID/EX register (NOP)</span>
+<span class="comment">// 3. Redirect PC to branch target</span></div>
+        </div>
+        <div class="card">
+          <h3>Flush Timing</h3>
+          <div class="timing-grid" style="grid-template-columns: auto repeat(7, 1fr);">
+            <div class="timing-header"></div>
+            <div class="timing-header">1</div><div class="timing-header">2</div><div class="timing-header">3</div>
+            <div class="timing-header">4</div><div class="timing-header">5</div><div class="timing-header">6</div><div class="timing-header">7</div>
+
+            <div class="timing-label">BEQ x1, x2, T</div>
+            <div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div><div class="timing-cell t-ex">EX</div>
+            <div class="timing-cell t-mem">MEM</div><div class="timing-cell t-wb">WB</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+            <div class="timing-label">PC+4 (wrong)</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-if">IF</div><div class="timing-cell t-flush">flush</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+            <div class="timing-label">PC+8 (wrong)</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-flush">flush</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+
+            <div class="timing-label">Target instr</div>
+            <div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div><div class="timing-cell t-empty"></div>
+            <div class="timing-cell t-if">IF</div><div class="timing-cell t-id">ID</div>
+            <div class="timing-cell t-ex">EX</div><div class="timing-cell t-mem">MEM</div>
+          </div>
+          <p class="text-xs text-dim mt-10" style="text-align:center;">2 wasted cycles per taken branch (fetched instructions are flushed)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 11: PERFORMANCE COUNTERS ==================== -->
+<div class="slide" id="slide11">
+  <div class="slide-header">
+    <div class="tag">Instrumentation</div>
+    <h2>Performance Counters &amp; Halt Detection</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Hardware Performance Monitors</h3>
+          <table class="data-table">
+            <tr><th>Counter</th><th>What It Measures</th><th>How</th></tr>
+            <tr>
+              <td class="fw-600 text-accent">perf_cycles</td>
+              <td>Total clock cycles elapsed</td>
+              <td class="text-xs text-dim">Increments every posedge clk</td>
+            </tr>
+            <tr>
+              <td class="fw-600 text-green">perf_instrs</td>
+              <td>Retired (completed) instructions</td>
+              <td class="text-xs text-dim">Counts when mem_wb_valid == 1</td>
+            </tr>
+            <tr>
+              <td class="fw-600 text-orange">perf_stalls</td>
+              <td>Load-use hazard stall cycles</td>
+              <td class="text-xs text-dim">Counts when stall signal asserted</td>
+            </tr>
+            <tr>
+              <td class="fw-600 text-red">perf_flushes</td>
+              <td>Branch/jump flush events</td>
+              <td class="text-xs text-dim">Counts when flush signal asserted</td>
+            </tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Derived Metrics</h3>
+          <div class="highlight-box mt-10">
+            <strong>CPI</strong> = perf_cycles / perf_instrs<br>
+            <strong>Stall Rate</strong> = perf_stalls / perf_cycles &times; 100%<br>
+            <strong>Flush Rate</strong> = perf_flushes / perf_cycles &times; 100%<br>
+            <strong>IPC</strong> = 1 / CPI (instructions per cycle)<br>
+            <strong>Speedup</strong> = N / CPI (vs single-cycle at same freq)
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Valid Bit Propagation</h3>
+          <p class="text-sm text-dim mb-10">To accurately count retired instructions, a valid bit propagates through all pipeline stages:</p>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Valid bit pipeline</span>
+<span class="keyword">reg</span> id_ex_valid, ex_mem_valid, mem_wb_valid;
+
+<span class="comment">// Set valid = 1 when real instr enters ID</span>
+<span class="comment">// Set valid = 0 on stall bubble or flush</span>
+<span class="comment">// Propagate through EX → MEM → WB</span>
+
+<span class="comment">// Count only when instruction reaches WB</span>
+<span class="keyword">if</span> (mem_wb_valid && !halted)
+  perf_instrs <= perf_instrs + <span class="number">1</span>;</div>
+        </div>
+        <div class="card">
+          <h3>Halt Detection</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Detect jal x0, 0 (self-loop)</span>
+<span class="keyword">wire</span> halt_instr =
+  (if_id_instr[<span class="number">6</span>:<span class="number">0</span>] == <span class="number">7'b1101111</span>)  <span class="comment">// JAL</span>
+  && (if_id_instr[<span class="number">11</span>:<span class="number">7</span>] == <span class="number">5'b0</span>)   <span class="comment">// rd=x0</span>
+  && (imm == <span class="number">0</span>);               <span class="comment">// offset=0</span>
+
+<span class="comment">// When halted: freeze all counters</span>
+<span class="keyword">if</span> (halt_instr) halted <= <span class="number">1</span>;</div>
+          <p class="text-xs text-dim mt-10">Programs end with <span class="mono">jal x0, 0</span> to halt cleanly. Counters freeze so results reflect only program execution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 12: BENCHMARK PROGRAMS ==================== -->
+<div class="slide" id="slide12">
+  <div class="slide-header">
+    <div class="tag">Testing</div>
+    <h2>Benchmark Programs &amp; Verification</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Fibonacci Benchmark (benchmark.hex)</h3>
+          <p class="text-sm text-dim mb-10">Iterative computation of F(0)&hellip;F(9), stores all 10 values to data memory.</p>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Pseudocode</span>
+a = 0; b = 1; mem[0] = a; mem[4] = b;
+<span class="keyword">for</span> (i = 2; i < 10; i++) {
+  temp = a + b;
+  mem[i*4] = temp;
+  a = b; b = temp;
+}
+<span class="keyword">halt</span>;  <span class="comment">// jal x0, 0</span></div>
+          <div class="highlight-box green mt-10">
+            <strong>Exercises:</strong> back-to-back dependencies, forwarding paths, branch loops, memory operations.
+          </div>
+        </div>
+        <div class="card">
+          <h3>Verified Memory Output</h3>
+          <table class="data-table">
+            <tr><th>Address</th><th>Value</th><th>Fibonacci</th></tr>
+            <tr><td class="mono">mem[0]</td><td class="good">0</td><td>F(0)</td></tr>
+            <tr><td class="mono">mem[1]</td><td class="good">1</td><td>F(1)</td></tr>
+            <tr><td class="mono">mem[2]</td><td class="good">1</td><td>F(2)</td></tr>
+            <tr><td class="mono">mem[3]</td><td class="good">2</td><td>F(3)</td></tr>
+            <tr><td class="mono">mem[4]</td><td class="good">3</td><td>F(4)</td></tr>
+            <tr><td class="mono">mem[5]</td><td class="good">5</td><td>F(5)</td></tr>
+            <tr><td class="mono">mem[6]</td><td class="good">8</td><td>F(6)</td></tr>
+            <tr><td class="mono">mem[7]</td><td class="good">13</td><td>F(7)</td></tr>
+            <tr><td class="mono">mem[8]</td><td class="good">21</td><td>F(8)</td></tr>
+            <tr><td class="mono">mem[9]</td><td class="good">34</td><td>F(9)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Pipeline Hazard Test (program.hex)</h3>
+          <p class="text-sm text-dim mb-10">6 targeted test cases covering every hazard scenario:</p>
+          <table class="data-table">
+            <tr><th>Test</th><th>Scenario</th><th>Result</th></tr>
+            <tr><td class="fw-600">1</td><td>EX/MEM forwarding (back-to-back)</td><td class="good">PASS</td></tr>
+            <tr><td class="fw-600">2</td><td>MEM/WB forwarding (2-gap)</td><td class="good">PASS</td></tr>
+            <tr><td class="fw-600">3</td><td>Load-use hazard (stall+fwd)</td><td class="good">PASS</td></tr>
+            <tr><td class="fw-600">4</td><td>R-type forwarding chain</td><td class="good">PASS</td></tr>
+            <tr><td class="fw-600">5</td><td>Store with forwarded data</td><td class="good">PASS</td></tr>
+            <tr><td class="fw-600">6</td><td>Branch with forwarding</td><td class="good">PASS</td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>Unit Tests</h3>
+          <table class="data-table">
+            <tr><th>Testbench</th><th>Tests</th><th>Status</th></tr>
+            <tr><td class="mono">alu_tb.v</td><td>ADD, AND, SUB + zero flag</td><td class="good">PASS</td></tr>
+            <tr><td class="mono">regfile_tb.v</td><td>Write, read, x0 hardwired</td><td class="good">PASS</td></tr>
+            <tr><td class="mono">top_tb.v</td><td>Full pipeline (35 instrs)</td><td class="good">PASS</td></tr>
+            <tr><td class="mono">benchmark_tb.v</td><td>Fibonacci (64 instrs)</td><td class="good">PASS</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Build & Run</h3>
+          <div class="code-block" style="font-size:0.72em;"><span class="comment"># Hazard test</span>
+iverilog -o test src/*.v tb/top_tb.v && vvp test
+
+<span class="comment"># Fibonacci benchmark</span>
+iverilog -o bench src/*.v tb/benchmark_tb.v && vvp bench</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 13: PERFORMANCE RESULTS ==================== -->
+<div class="slide" id="slide13">
+  <div class="slide-header">
+    <div class="tag">Results</div>
+    <h2>Performance Results</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-4" style="margin-bottom: 20px;">
+      <div class="metric-card">
+        <div class="value">1.14</div>
+        <div class="label">CPI (Fibonacci)</div>
+      </div>
+      <div class="metric-card accent2">
+        <div class="value">0</div>
+        <div class="label">Stall Cycles</div>
+      </div>
+      <div class="metric-card accent3">
+        <div class="value">9.9%</div>
+        <div class="label">Flush Overhead</div>
+      </div>
+      <div class="metric-card">
+        <div class="value">4.4x</div>
+        <div class="label">Throughput Gain</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Fibonacci Benchmark (64 instructions, 8 loop iterations)</h3>
+        <table class="data-table">
+          <tr><th>Metric</th><th>Single-Cycle</th><th>5-Stage Pipeline</th></tr>
+          <tr><td>Clock Cycles</td><td>71</td><td class="fw-600">81</td></tr>
+          <tr><td>Instructions Retired</td><td>71</td><td class="fw-600">71</td></tr>
+          <tr><td>CPI</td><td>1.00</td><td class="highlight">1.14</td></tr>
+          <tr><td>Stall Cycles</td><td>0</td><td class="good">0</td></tr>
+          <tr><td>Flush Cycles</td><td>0</td><td class="warn">8</td></tr>
+          <tr><td>Flush Rate</td><td>0%</td><td class="warn">9.9%</td></tr>
+          <tr><td>Max Clock Freq</td><td>1/T<sub>crit</sub></td><td class="good">~5/T<sub>crit</sub></td></tr>
+          <tr><td>Effective Throughput</td><td>1x</td><td class="highlight">~4.4x</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Hazard Test (35 instructions)</h3>
+        <table class="data-table" style="margin-bottom:16px;">
+          <tr><th>Metric</th><th>Value</th></tr>
+          <tr><td>Clock Cycles</td><td class="fw-600">60</td></tr>
+          <tr><td>Instructions Retired</td><td class="fw-600">55</td></tr>
+          <tr><td>CPI</td><td class="highlight">1.09</td></tr>
+          <tr><td>Stall Cycles</td><td class="warn">1</td></tr>
+          <tr><td>Flush Cycles</td><td class="warn">1</td></tr>
+          <tr><td>Stall Rate</td><td>1.67%</td></tr>
+          <tr><td>Flush Rate</td><td>1.67%</td></tr>
+        </table>
+        <div class="highlight-box green">
+          <strong>Key:</strong> Even with deliberate hazard-heavy code, CPI stays at <strong>1.09</strong> thanks to forwarding.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 14: QUANTITATIVE ANALYSIS ==================== -->
+<div class="slide" id="slide14">
+  <div class="slide-header">
+    <div class="tag">Analysis</div>
+    <h2>Quantitative Analysis &amp; Comparison</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2" style="margin-bottom: 16px;">
+      <div class="card">
+        <h3>Cycle Breakdown &mdash; Fibonacci</h3>
+        <div style="margin: 15px 0;">
+          <div class="h-bar-chart">
+            <div class="h-bar-row">
+              <div class="h-bar-label">Useful work</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:87.65%; background: linear-gradient(90deg, #34d399, #60a5fa);">71 cycles (87.7%)</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">Branch flushes</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:9.88%; background: linear-gradient(90deg, #fb923c, #f87171);">8 (9.9%)</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">Pipeline fill/drain</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:2.47%; background: linear-gradient(90deg, #a78bfa, #ec4899);">2 (2.5%)</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">Load-use stalls</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:0.5%; min-width: 60px; background: linear-gradient(90deg, #475569, #64748b);">0 (0%)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>CPI Breakdown Analysis</h3>
+        <div style="margin: 10px 0;">
+          <table class="data-table">
+            <tr><th>Component</th><th>Contribution to CPI</th></tr>
+            <tr><td>Base CPI (ideal pipeline)</td><td class="good fw-600">1.000</td></tr>
+            <tr><td>+ Load-use stall penalty</td><td class="fw-600">+0.000</td></tr>
+            <tr><td>+ Branch flush penalty</td><td class="warn fw-600">+0.113</td></tr>
+            <tr><td>+ Pipeline fill/drain</td><td class="fw-600">+0.028</td></tr>
+            <tr style="border-top: 2px solid var(--accent);">
+              <td class="fw-700">Measured CPI</td>
+              <td class="highlight fw-700" style="font-size:1.1em;">1.141</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Forwarding Effectiveness</h3>
+        <div style="margin:10px 0;">
+          <div class="h-bar-chart">
+            <div class="h-bar-row">
+              <div class="h-bar-label">With forwarding</div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:87.65%; background: linear-gradient(90deg, #34d399, #60a5fa);">CPI = 1.14</div>
+              </div>
+            </div>
+            <div class="h-bar-row">
+              <div class="h-bar-label">Without forwarding<br><span class="text-xs">(estimated)</span></div>
+              <div class="h-bar-track">
+                <div class="h-bar-fill" style="width:55%; background: linear-gradient(90deg, #f87171, #fb923c);">CPI = 1.6 &ndash; 2.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box green mt-10">
+          <strong>Forwarding eliminates 100% of data stalls</strong> on the Fibonacci benchmark. Every RAW dependency is resolved by EX/MEM, MEM/WB, or write-through forwarding with zero penalty.
+        </div>
+      </div>
+      <div class="card">
+        <h3>Throughput Analysis</h3>
+        <table class="data-table" style="margin-bottom: 12px;">
+          <tr><th>Architecture</th><th>Clock Period</th><th>CPI</th><th>Throughput</th></tr>
+          <tr>
+            <td>Single-Cycle</td>
+            <td class="mono">T<sub>crit</sub></td>
+            <td>1.00</td>
+            <td>1/T<sub>crit</sub></td>
+          </tr>
+          <tr>
+            <td>Pipeline (ours)</td>
+            <td class="mono good">T<sub>crit</sub>/5</td>
+            <td>1.14</td>
+            <td class="good fw-600">4.39/T<sub>crit</sub></td>
+          </tr>
+          <tr>
+            <td>Pipeline (no fwd)</td>
+            <td class="mono">T<sub>crit</sub>/5</td>
+            <td class="warn">~1.8</td>
+            <td>~2.78/T<sub>crit</sub></td>
+          </tr>
+        </table>
+        <div class="highlight-box">
+          <strong>Throughput</strong> = IPC &times; f<sub>clk</sub> = (1/1.14) &times; 5f = <strong>4.39f</strong><br>
+          <strong>Speedup:</strong> 4.39x over single-cycle baseline<br>
+          <strong>Efficiency:</strong> 87.7% of ideal pipeline throughput
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 15: ISA EXTENSION — CHACHA20 ==================== -->
+<div class="slide" id="slide15">
+  <div class="slide-header">
+    <div class="tag">ISA Extension</div>
+    <h2>Custom ROL Instruction &mdash; ChaCha20 Quarter-Round</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-2" style="margin-bottom:14px;">
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3>What is ChaCha20?</h3>
+          <ul class="bullet-list">
+            <li><strong>Stream cipher</strong> used in TLS 1.3, WireGuard, SSH, Android disk encryption</li>
+            <li>Core operation: the <strong>quarter-round</strong> &mdash; built entirely from ADD, XOR, and Rotate-Left</li>
+            <li>Standard RV32I has <strong>no rotate instruction</strong> &mdash; must emulate with 3 instructions (SLL + SRL + OR)</li>
+            <li>RISC-V <strong>Zbkb extension</strong> adds ROL/ROR for exactly this reason</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Our Custom Instruction</h3>
+          <div class="code-block" style="font-size:0.72em; line-height:1.6;"><span class="comment">// Added to alu.v</span>
+<span class="number">4'b1010</span>: result =
+  (src1 << src2[<span class="number">4</span>:<span class="number">0</span>]) |
+  (src1 >> (<span class="number">32</span> - src2[<span class="number">4</span>:<span class="number">0</span>]));  <span class="comment">// ROL</span>
+
+<span class="comment">// Added to control.v</span>
+<span class="number">7'b0001011</span>: <span class="keyword">begin</span>          <span class="comment">// custom-0 opcode</span>
+  reg_write   = <span class="number">1</span>;
+  alu_src     = <span class="number">0</span>;
+  alu_control = <span class="number">4'b1010</span>;   <span class="comment">// ROL</span>
+<span class="keyword">end</span></div>
+          <p class="text-xs text-dim mt-10">Uses RISC-V reserved <strong>custom-0</strong> opcode space (0001011). R-type format, fully compatible with existing pipeline &amp; forwarding.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3>ChaCha20 Quarter-Round Algorithm</h3>
+          <div class="code-block" style="font-size:0.76em; line-height:1.8;"><span class="comment">// Input:  a=0x61  b=0x62  c=0x63  d=0x64</span>
+<span class="comment">// Repeat 4 rounds of:</span>
+a += b;   d ^= a;   d <span class="keyword">&lt;&lt;&lt;=</span> <span class="number">16</span>;
+c += d;   b ^= c;   b <span class="keyword">&lt;&lt;&lt;=</span> <span class="number">12</span>;
+a += b;   d ^= a;   d <span class="keyword">&lt;&lt;&lt;=</span>  <span class="number">8</span>;
+c += d;   b ^= c;   b <span class="keyword">&lt;&lt;&lt;=</span>  <span class="number">7</span>;
+<span class="comment">// Output (after 4 rounds):</span>
+<span class="comment">// a=0xD576E19B  b=0x1898E8F8</span>
+<span class="comment">// c=0x36858953  d=0x9FF722DF</span></div>
+        </div>
+        <div class="card">
+          <h3>Round-by-Round Trace</h3>
+          <table class="data-table" style="font-size:0.82em;">
+            <tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
+            <tr><td class="fw-600 text-accent">Input</td><td class="mono">00000061</td><td class="mono">00000062</td><td class="mono">00000063</td><td class="mono">00000064</td></tr>
+            <tr><td class="fw-600 text-green">Round 1</td><td class="mono">700010CD</td><td class="mono">DBEEECEB</td><td class="mono">A7B7CDD3</td><td class="mono">A710CD70</td></tr>
+            <tr><td class="fw-600 text-orange">Round 2</td><td class="mono">31529DEE</td><td class="mono">C935724B</td><td class="mono">72F1CAD2</td><td class="mono">9A711001</td></tr>
+            <tr><td class="fw-600" style="color:#ec4899">Round 3</td><td class="mono">F0201BDA</td><td class="mono">1EA20D3F</td><td class="mono">8BA54FBB</td><td class="mono">187B23F0</td></tr>
+            <tr><td class="fw-600 text-red">Round 4</td><td class="mono highlight">D576E19B</td><td class="mono highlight">1898E8F8</td><td class="mono highlight">36858953</td><td class="mono highlight">9FF722DF</td></tr>
+          </table>
+          <p class="text-xs text-dim mt-10">Both software &amp; hardware versions produce <strong>identical output</strong> &mdash; verified in simulation.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Software (3 instrs per rotate) vs Hardware (1 custom ROL)</h3>
+      <div class="grid-2">
+        <div>
+          <p class="text-xs fw-600 mb-10 text-orange">Standard RV32I &mdash; rotate d left by 16:</p>
+          <div class="code-block" style="font-size:0.72em; line-height:1.5;"><span class="keyword">SLLI</span> x5, x4, 16     <span class="comment">// t0 = d &lt;&lt; 16</span>
+<span class="keyword">SRLI</span> x6, x4, 16     <span class="comment">// t1 = d &gt;&gt; 16</span>
+<span class="keyword">OR</span>   x4, x5, x6     <span class="comment">// d  = t0 | t1</span></div>
+        </div>
+        <div>
+          <p class="text-xs fw-600 mb-10 text-green">With Custom ROL &mdash; same operation:</p>
+          <div class="code-block" style="font-size:0.72em; line-height:1.5;"><span class="keyword">ROL</span>  x4, x4, x12   <span class="comment">// d = ROL(d, 16)</span>
+<span class="comment">// x12 holds rotation amount (16)</span>
+<span class="comment">// 1 instruction, 1 cycle, done.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 16: CRYPTO BENCHMARK RESULTS ==================== -->
+<div class="slide" id="slide16">
+  <div class="slide-header">
+    <div class="tag">ISA Extension</div>
+    <h2>Crypto Benchmark: Software vs Hardware &mdash; Results</h2>
+  </div>
+  <div class="content-area">
+    <div class="grid-4" style="margin-bottom:16px;">
+      <div class="metric-card">
+        <div class="value">1.35x</div>
+        <div class="label">Speedup</div>
+      </div>
+      <div class="metric-card accent2">
+        <div class="value">26%</div>
+        <div class="label">Fewer Cycles</div>
+      </div>
+      <div class="metric-card accent3">
+        <div class="value">28</div>
+        <div class="label">Instructions Saved</div>
+      </div>
+      <div class="metric-card">
+        <div class="value">36%</div>
+        <div class="label">Code Reduction</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:16px;">
+      <div class="card">
+        <h3>Head-to-Head Comparison</h3>
+        <table class="data-table">
+          <tr><th>Metric</th><th>Software (RV32I)</th><th>Hardware (+ ROL)</th><th>Delta</th></tr>
+          <tr><td>Clock Cycles</td><td class="fw-600">107</td><td class="good fw-600">79</td><td class="good">&minus;28 (26%)</td></tr>
+          <tr><td>Instructions Retired</td><td class="fw-600">101</td><td class="good fw-600">73</td><td class="good">&minus;28 (28%)</td></tr>
+          <tr><td>Loop Body Size</td><td class="fw-600">22 instrs</td><td class="good fw-600">14 instrs</td><td class="good">&minus;8 per iter</td></tr>
+          <tr><td>Stalls</td><td>0</td><td>0</td><td>&mdash;</td></tr>
+          <tr><td>Flushes</td><td>4</td><td>4</td><td>&mdash;</td></tr>
+          <tr><td>CPI</td><td>1.059</td><td>1.082</td><td>&mdash;</td></tr>
+          <tr><td>Output (a)</td><td class="mono text-xs">0xD576E19B</td><td class="mono text-xs">0xD576E19B</td><td class="good">match</td></tr>
+          <tr><td>Output (b)</td><td class="mono text-xs">0x1898E8F8</td><td class="mono text-xs">0x1898E8F8</td><td class="good">match</td></tr>
+          <tr><td>Output (c)</td><td class="mono text-xs">0x36858953</td><td class="mono text-xs">0x36858953</td><td class="good">match</td></tr>
+          <tr><td>Output (d)</td><td class="mono text-xs">0x9FF722DF</td><td class="mono text-xs">0x9FF722DF</td><td class="good">match</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3>Cycle Breakdown</h3>
+          <div style="margin:12px 0;">
+            <p class="text-xs fw-600 mb-10 text-dim">SOFTWARE (107 cycles)</p>
+            <div class="h-bar-chart">
+              <div class="h-bar-row">
+                <div class="h-bar-label" style="min-width:100px;">Compute</div>
+                <div class="h-bar-track">
+                  <div class="h-bar-fill" style="width:92%; background: linear-gradient(90deg, #fb923c, #f87171);">101 instrs</div>
+                </div>
+              </div>
+              <div class="h-bar-row">
+                <div class="h-bar-label" style="min-width:100px;">Flushes</div>
+                <div class="h-bar-track">
+                  <div class="h-bar-fill" style="width:6%; min-width:30px; background: linear-gradient(90deg, #475569, #64748b);">4</div>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs fw-600 mb-10 mt-20 text-dim">HARDWARE (79 cycles)</p>
+            <div class="h-bar-chart">
+              <div class="h-bar-row">
+                <div class="h-bar-label" style="min-width:100px;">Compute</div>
+                <div class="h-bar-track">
+                  <div class="h-bar-fill" style="width:68%; background: linear-gradient(90deg, #34d399, #60a5fa);">73 instrs</div>
+                </div>
+              </div>
+              <div class="h-bar-row">
+                <div class="h-bar-label" style="min-width:100px;">Flushes</div>
+                <div class="h-bar-track">
+                  <div class="h-bar-fill" style="width:6%; min-width:30px; background: linear-gradient(90deg, #475569, #64748b);">4</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Real-World Impact</h3>
+          <ul class="bullet-list">
+            <li><strong>IoT devices:</strong> Encrypt sensor data on slow MCUs without draining battery</li>
+            <li><strong>Secure boot:</strong> Verify firmware signatures faster at startup</li>
+            <li><strong>TLS 1.3:</strong> ChaCha20-Poly1305 is the default cipher for mobile &amp; embedded</li>
+            <li><strong>26% fewer cycles</strong> per encryption block means proportionally <strong>lower energy</strong> per packet</li>
+          </ul>
+          <div class="highlight-box green mt-10">
+            <strong>Hardware cost:</strong> 1 extra ALU case (1 line of Verilog) + 1 opcode decode entry. Minimal area overhead for <strong>1.35x crypto speedup</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SLIDE 17: CONCLUSION ==================== -->
+<div class="slide" id="slide17">
+  <div class="slide-header">
+    <div class="tag">Conclusion</div>
+    <h2>Summary &amp; Future Work</h2>
+  </div>
+  <div class="content-area">
+    <div class="conclusion-grid">
+      <div class="conclusion-card" style="border-left-color: #60a5fa;">
+        <h3 style="color:#60a5fa;">What We Built</h3>
+        <ul>
+          <li>Complete <strong>RV32I processor</strong> with 37 + 1 custom instruction</li>
+          <li><strong>5-stage pipeline</strong> (IF/ID/EX/MEM/WB) in Verilog</li>
+          <li><strong>9 hardware modules</strong>, 674 lines of synthesizable RTL</li>
+          <li>Full <strong>forwarding unit</strong> with 3 bypass paths</li>
+          <li><strong>Custom ROL instruction</strong> for crypto acceleration</li>
+          <li>5 testbenches with comprehensive verification</li>
+        </ul>
+      </div>
+      <div class="conclusion-card" style="border-left-color: #34d399;">
+        <h3 style="color:#34d399;">Key Results</h3>
+        <ul>
+          <li><strong>CPI = 1.14</strong> on Fibonacci (close to ideal 1.0)</li>
+          <li><strong>4.4x throughput</strong> over single-cycle baseline</li>
+          <li><strong>0 data stalls</strong> &mdash; forwarding handles all RAW hazards</li>
+          <li><strong>87.7% pipeline efficiency</strong></li>
+          <li><strong>1.35x crypto speedup</strong> with custom ROL instruction</li>
+          <li><strong>26% cycle reduction</strong> on ChaCha20 quarter-round</li>
+        </ul>
+      </div>
+      <div class="conclusion-card" style="border-left-color: #fb923c;">
+        <h3 style="color:#fb923c;">Key Takeaways</h3>
+        <ul>
+          <li>Forwarding is <strong>essential</strong> &mdash; without it CPI would be 1.6&ndash;2.0x</li>
+          <li>Branch penalties are the <strong>dominant overhead</strong> in pipelined designs</li>
+          <li>Performance counters are <strong>critical for quantitative analysis</strong></li>
+          <li>Pipeline design requires careful <strong>hazard analysis</strong> across all instruction gaps</li>
+        </ul>
+      </div>
+      <div class="conclusion-card" style="border-left-color: #a78bfa;">
+        <h3 style="color:#a78bfa;">Future Enhancements</h3>
+        <ul>
+          <li><strong>Branch predictor</strong> &mdash; reduce 2-cycle penalty</li>
+          <li><strong>Cache hierarchy</strong> &mdash; L1 I-cache + D-cache</li>
+          <li><strong>RV32M extension</strong> &mdash; multiply/divide</li>
+          <li><strong>More Zbkb crypto ops</strong> &mdash; ROR, ANDN, pack</li>
+          <li><strong>FPGA synthesis</strong> &mdash; deploy on real hardware</li>
+          <li><strong>Full ChaCha20 block</strong> &mdash; 20 rounds, 256-bit key</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <div style="display: inline-block; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 40px;">
+        <p style="font-size: 1.3em; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Thank You</p>
+        <p class="text-sm text-dim" style="margin-top: 6px;">Adesh Pandey &middot; Aayush Gelal &middot; Bishesh Paudel</p>
+        <p class="text-xs text-dim" style="margin-top: 4px;">Tribhuvan University &middot; Pulchowk Campus &middot; 2026</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">&#9664; Prev</button>
+  <span class="slide-counter" id="counter">1 / 17</span>
+  <button onclick="nextSlide()">Next &#9654;</button>
+</div>
+<div class="slide-number" id="slideNum">Slide 1</div>
+<div class="kbd-hint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> arrow keys to navigate</div>
+
+<script>
+  let current = 1;
+  const total = 17;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide' + n).classList.add('active');
+    document.getElementById('counter').textContent = n + ' / ' + total;
+    document.getElementById('slideNum').textContent = 'Slide ' + n;
+  }
+
+  function nextSlide() {
+    if (current < total) { current++; showSlide(current); }
+  }
+
+  function prevSlide() {
+    if (current > 1) { current--; showSlide(current); }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Home') { current = 1; showSlide(current); }
+    if (e.key === 'End') { current = total; showSlide(current); }
+  });
+</script>
+</body>
+</html>

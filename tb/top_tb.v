@@ -72,6 +72,26 @@ module top_tb;
     reg  virtual_rx;
     wire virtual_tx;
 
+    // UART RX/TX live outside top now (in zybo_top). For this testbench we
+    // reproduce the same wiring: a local uart_rx feeds the CPU's i_uart_rx_*
+    // inputs, and the CPU's o_uart_tx_* drive a local uart_tx onto virtual_tx.
+    wire [7:0] tb_rx_data;
+    wire       tb_rx_done;
+    wire       tb_cpu_tx_start;
+    wire [7:0] tb_cpu_tx_data;
+    wire       tb_tx_busy;
+
+    uart_rx tb_rx (
+        .clk(clk), .reset(reset),
+        .rx_pin(virtual_rx),
+        .rx_data(tb_rx_data), .rx_done(tb_rx_done)
+    );
+    uart_tx tb_tx (
+        .clk(clk), .reset(reset),
+        .tx_start(tb_cpu_tx_start), .tx_data(tb_cpu_tx_data),
+        .tx_pin(virtual_tx), .tx_busy(tb_tx_busy)
+    );
+
     // Instantiate your processor core (Not zybo_top, just the core)
     top dut (
         .clk(clk),
@@ -81,8 +101,15 @@ module top_tb;
         .o_perf_halted(),
         .o_pc(),
         .o_gpio(),
-        .i_uart_rx(virtual_rx),
-        .o_uart_tx(virtual_tx)
+        .i_uart_rx_data (tb_rx_data),
+        .i_uart_rx_done (tb_rx_done),
+        .o_uart_tx_start(tb_cpu_tx_start),
+        .o_uart_tx_data (tb_cpu_tx_data),
+        .i_uart_tx_busy (tb_tx_busy),
+        // No bootloader in this TB; program is loaded by $readmemh
+        .i_imem_we(1'b0),
+        .i_imem_waddr(8'b0),
+        .i_imem_wdata(32'b0)
     );
 
     // 125 MHz Clock Generator (8ns period)

@@ -3,7 +3,11 @@
 module crypto_tb;
     reg clk, reset;
 
-    top uut(.clk(clk), .reset(reset));
+    top uut(
+        .clk(clk), .reset(reset),
+        .i_uart_rx_data(8'b0), .i_uart_rx_done(1'b0), .i_uart_tx_busy(1'b0),
+        .i_imem_we(1'b0), .i_imem_waddr(8'b0), .i_imem_wdata(32'b0)
+    );
 
     always #5 clk = ~clk;
 

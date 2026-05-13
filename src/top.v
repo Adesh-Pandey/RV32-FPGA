@@ -1,15 +1,23 @@
 module top(
     input             clk,
-    input             reset,
+    input             reset,           // CPU pipeline reset (held high by bootloader during load)
     output [31:0]     o_perf_cycles,
     output [31:0]     o_perf_instrs,
     output            o_perf_halted,
     output [31:0]     o_pc,
     output [4:0]      o_gpio,
-    
-    // --- ADDED FOR UART ---
-    input  wire       i_uart_rx,
-    output wire       o_uart_tx
+
+    // --- UART (uart_rx/uart_tx live in zybo_top; this is the CPU's view) ---
+    input  wire [7:0] i_uart_rx_data,
+    input  wire       i_uart_rx_done,
+    output wire       o_uart_tx_start,
+    output wire [7:0] o_uart_tx_data,
+    input  wire       i_uart_tx_busy,
+
+    // --- IMEM write port (driven by bootloader) ---
+    input  wire        i_imem_we,
+    input  wire [7:0]  i_imem_waddr,
+    input  wire [31:0] i_imem_wdata
 );
 
     wire [4:0] dmem_gpio;
@@ -86,7 +94,11 @@ module top(
     // =========================================================
     pc pc_unit( .clk(clk), .rst(reset), .en(!stall), .pc_next(pc_next), .pc(pc_out) );
     pc_adder pc_adder_unit( .a(pc_out), .y(pc_plus4) );
-    imem imem_unit( .a(pc_out), .rd(if_instr) );
+    imem imem_unit(
+        .clk(clk),
+        .we(i_imem_we), .waddr(i_imem_waddr), .wdata(i_imem_wdata),
+        .a(pc_out), .rd(if_instr)
+    );
 
     assign pc_next = (id_ex_jalr) ? ex_jalr_target :
                      (id_ex_jump || ex_branch_taken) ? ex_branch_target : pc_plus4;
@@ -160,10 +172,6 @@ module top(
     wire is_mem_read = (ex_mem_result_src == 2'b01);
     wire is_rx_read  = is_mem_read && (ex_mem_alu_result == 32'h108);
 
-    wire [7:0] uart_rx_data;
-    wire       uart_rx_done;
-    wire       uart_tx_busy;
-    
     // Latch to hold RX data until the CPU actually reads it
     reg [7:0]  rx_buffer;
     reg        rx_ready;
@@ -172,30 +180,17 @@ module top(
         if (reset) begin
             rx_buffer <= 0;
             rx_ready  <= 0;
-        end else if (uart_rx_done) begin
-            rx_buffer <= uart_rx_data;
+        end else if (i_uart_rx_done) begin
+            rx_buffer <= i_uart_rx_data;
             rx_ready  <= 1; // Flag high: data arrived!
         end else if (is_rx_read) begin
             rx_ready  <= 0; // Flag low: CPU read the data
         end
     end
 
-    uart_tx my_tx (
-        .clk(clk),
-        .reset(reset),
-        .tx_start(is_tx_write),
-        .tx_data(ex_mem_rd2[7:0]), // Write the lowest 8 bits
-        .tx_pin(o_uart_tx),
-        .tx_busy(uart_tx_busy)
-    );
-
-    uart_rx my_rx (
-        .clk(clk),
-        .reset(reset),
-        .rx_pin(i_uart_rx),
-        .rx_data(uart_rx_data),
-        .rx_done(uart_rx_done)
-    );
+    // Drive the shared UART TX (muxed against the bootloader in zybo_top).
+    assign o_uart_tx_start = is_tx_write;
+    assign o_uart_tx_data  = ex_mem_rd2[7:0];
 
     wire [31:0] dmem_out;
     dmem dmem_unit(
@@ -210,7 +205,7 @@ module top(
     // THE MULTIPLEXER: Choose what to read based on the memory address
     wire [31:0] mem_read_data;
     assign mem_read_data = (ex_mem_alu_result == 32'h108) ? {24'b0, rx_buffer} :
-                           (ex_mem_alu_result == 32'h10C) ? {30'b0, uart_tx_busy, rx_ready} :
+                           (ex_mem_alu_result == 32'h10C) ? {30'b0, i_uart_tx_busy, rx_ready} :
                            dmem_out;
 
     // =========================================================

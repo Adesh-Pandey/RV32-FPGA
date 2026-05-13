@@ -17,31 +17,33 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param chipscope.maxJobs 3
 set_param xicom.use_bs_reader 1
-set_param chipscope.maxJobs 7
+set_msg_config -id {Common 17-41} -limit 10000000
 create_project -in_memory -part xc7z010clg400-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.cache/wt [current_project]
-set_property parent.project_path /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.xpr [current_project]
+set_property webtalk.parent_dir C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.cache/wt [current_project]
+set_property parent.project_path C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property board_part digilentinc.com:zybo:part0:2.0 [current_project]
-set_property ip_output_repo /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.cache/ip [current_project]
+set_property ip_output_repo c:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog -library xil_defaultlib {
-  /home/jolly/Desktop/RV32FPGA/src/alu.v
-  /home/jolly/Desktop/RV32FPGA/src/control.v
-  /home/jolly/Desktop/RV32FPGA/src/dmem.v
-  /home/jolly/Desktop/RV32FPGA/src/imem.v
-  /home/jolly/Desktop/RV32FPGA/src/imm_gen.v
-  /home/jolly/Desktop/RV32FPGA/src/pc.v
-  /home/jolly/Desktop/RV32FPGA/src/pc_adder.v
-  /home/jolly/Desktop/RV32FPGA/src/regfile.v
-  /home/jolly/Desktop/RV32FPGA/src/top.v
-  /home/jolly/Desktop/RV32FPGA/fpga/rtl/zybo_top.v
+  C:/Coding/RV32-FPGA/src/alu.v
+  C:/Coding/RV32-FPGA/src/control.v
+  C:/Coding/RV32-FPGA/src/dmem.v
+  C:/Coding/RV32-FPGA/src/imem.v
+  C:/Coding/RV32-FPGA/src/imm_gen.v
+  C:/Coding/RV32-FPGA/src/pc.v
+  C:/Coding/RV32-FPGA/src/pc_adder.v
+  C:/Coding/RV32-FPGA/src/regfile.v
+  C:/Coding/RV32-FPGA/src/top.v
+  C:/Coding/RV32-FPGA/src/uart_rx.v
+  C:/Coding/RV32-FPGA/src/uart_tx.v
+  C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -51,8 +53,8 @@ read_verilog -library xil_defaultlib {
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc /home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc
-set_property used_in_implementation false [get_files /home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc]
+read_xdc C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc
+set_property used_in_implementation false [get_files C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]

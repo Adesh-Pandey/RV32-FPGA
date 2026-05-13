@@ -19,3 +19,8 @@ set_property -dict { PACKAGE_PIN U20  IOSTANDARD LVCMOS33 } [get_ports {gpio[1]}
 set_property -dict { PACKAGE_PIN V20  IOSTANDARD LVCMOS33 } [get_ports {gpio[2]}]
 set_property -dict { PACKAGE_PIN W20  IOSTANDARD LVCMOS33 } [get_ports {gpio[3]}]
 set_property -dict { PACKAGE_PIN Y18  IOSTANDARD LVCMOS33 } [get_ports {gpio[4]}]
+
+## PMOD JE (Bottom Row) for UART
+## ---> THESE ARE THE TWO PINS THAT WERE SWAPPED <---
+set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports uart_rx_pin]
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports uart_tx_pin]

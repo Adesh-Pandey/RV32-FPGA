@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Wed May 13 11:09:12 2026
+# Process ID: 16460
+# Current directory: C:/Coding/RV32-FPGA/fpga/zybo_rv32
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent10824 C:\Coding\RV32-FPGA\fpga\zybo_rv32\zybo_rv32.xpr
+# Log file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/vivado.log
+# Journal file: C:/Coding/RV32-FPGA/fpga/zybo_rv32\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.xpr
+INFO: [Project 1-313] Project file moved from '/home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32' since last save.
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-2] IPUserFilesDir: Could not find the directory 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.ip_user_files', nor could it be found using path 'C:/home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.ip_user_files'.
+CRITICAL WARNING: [Board 49-67] The board_part definition was not found for digilentinc.com:zybo:part0:2.0. This can happen sometimes when you use custom board part. You can resolve this issue by setting 'board.repoPaths' parameter, pointing to the location of custom board files. Valid board_part values can be retrieved with the 'get_board_parts' Tcl command.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/data/ip'.
+open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:06 . Memory (MB): peak = 872.926 ; gain = 223.168
+update_compile_order -fileset sources_1
+reset_run synth_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed May 13 11:14:54 2026...

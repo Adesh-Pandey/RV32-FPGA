@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Sat May  9 17:03:45 2026
-| Host         : archlinux running 64-bit Arch Linux
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Wed May 13 13:45:40 2026
+| Host         : AayushMSI running 64-bit major release  (build 9200)
 | Command      : report_utilization -file zybo_top_utilization_synth.rpt -pb zybo_top_utilization_synth.pb
 | Design       : zybo_top
 | Device       : 7z010clg400-1
@@ -30,13 +30,13 @@ Table of Contents
 +----------------------------+------+-------+-----------+-------+
 |          Site Type         | Used | Fixed | Available | Util% |
 +----------------------------+------+-------+-----------+-------+
-| Slice LUTs*                | 1232 |     0 |     17600 |  7.00 |
-|   LUT as Logic             | 1151 |     0 |     17600 |  6.54 |
+| Slice LUTs*                | 1346 |     0 |     17600 |  7.65 |
+|   LUT as Logic             | 1265 |     0 |     17600 |  7.19 |
 |   LUT as Memory            |   81 |     0 |      6000 |  1.35 |
 |     LUT as Distributed RAM |   80 |     0 |           |       |
 |     LUT as Shift Register  |    1 |     0 |           |       |
-| Slice Registers            |  574 |     0 |     35200 |  1.63 |
-|   Register as Flip Flop    |  574 |     0 |     35200 |  1.63 |
+| Slice Registers            |  635 |     0 |     35200 |  1.80 |
+|   Register as Flip Flop    |  635 |     0 |     35200 |  1.80 |
 |   Register as Latch        |    0 |     0 |     35200 |  0.00 |
 | F7 Muxes                   |    0 |     0 |      8800 |  0.00 |
 | F8 Muxes                   |    0 |     0 |      4400 |  0.00 |
@@ -58,8 +58,8 @@ Table of Contents
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 1     |          Yes |         Set |            - |
-| 573   |          Yes |       Reset |            - |
+| 14    |          Yes |         Set |            - |
+| 621   |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -92,7 +92,7 @@ Table of Contents
 +-----------------------------+------+-------+-----------+-------+
 |          Site Type          | Used | Fixed | Available | Util% |
 +-----------------------------+------+-------+-----------+-------+
-| Bonded IOB                  |   11 |     0 |       100 | 11.00 |
+| Bonded IOB                  |   13 |     0 |       100 | 13.00 |
 | Bonded IPADs                |    0 |     0 |         2 |  0.00 |
 | Bonded IOPADs               |    0 |     0 |       130 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |         2 |  0.00 |
@@ -148,21 +148,21 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDRE     |  573 |        Flop & Latch |
-| LUT6     |  506 |                 LUT |
-| LUT5     |  293 |                 LUT |
-| LUT4     |  290 |                 LUT |
-| LUT3     |  100 |                 LUT |
+| FDRE     |  621 |        Flop & Latch |
+| LUT6     |  485 |                 LUT |
+| LUT4     |  353 |                 LUT |
+| LUT5     |  295 |                 LUT |
+| LUT3     |  180 |                 LUT |
+| LUT2     |   75 |                 LUT |
 | RAMD32   |   72 |  Distributed Memory |
-| LUT2     |   63 |                 LUT |
-| CARRY4   |   54 |          CarryLogic |
+| CARRY4   |   57 |          CarryLogic |
+| LUT1     |   39 |                 LUT |
 | RAMS64E  |   32 |  Distributed Memory |
 | RAMS32   |   24 |  Distributed Memory |
-| OBUF     |    9 |                  IO |
-| LUT1     |    7 |                 LUT |
-| IBUF     |    2 |                  IO |
+| FDSE     |   14 |        Flop & Latch |
+| OBUF     |   10 |                  IO |
+| IBUF     |    3 |                  IO |
 | SRL16E   |    1 |  Distributed Memory |
-| FDSE     |    1 |        Flop & Latch |
 | BUFG     |    1 |               Clock |
 +----------+------+---------------------+
 

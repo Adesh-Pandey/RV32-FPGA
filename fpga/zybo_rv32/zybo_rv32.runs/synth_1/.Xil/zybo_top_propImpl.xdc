@@ -1,4 +1,4 @@
-set_property SRC_FILE_INFO {cfile:/home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc rfile:../../../../constraints/zybo_rv32.xdc id:1} [current_design]
+set_property SRC_FILE_INFO {cfile:C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc rfile:../../../../constraints/zybo_rv32.xdc id:1} [current_design]
 set_property src_info {type:XDC file:1 line:4 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN L16  IOSTANDARD LVCMOS33 } [get_ports clk]
 set_property src_info {type:XDC file:1 line:8 export:INPUT save:INPUT read:READ} [current_design]
@@ -21,3 +21,7 @@ set_property src_info {type:XDC file:1 line:20 export:INPUT save:INPUT read:READ
 set_property -dict { PACKAGE_PIN W20  IOSTANDARD LVCMOS33 } [get_ports {gpio[3]}]
 set_property src_info {type:XDC file:1 line:21 export:INPUT save:INPUT read:READ} [current_design]
 set_property -dict { PACKAGE_PIN Y18  IOSTANDARD LVCMOS33 } [get_ports {gpio[4]}]
+set_property src_info {type:XDC file:1 line:25 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports uart_rx_pin]
+set_property src_info {type:XDC file:1 line:26 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports uart_tx_pin]

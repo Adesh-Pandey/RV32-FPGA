@@ -1,16 +1,6 @@
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
 |       Launch Clock       |      Capture Clock       |                                                 Pin                                                      |
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[25]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[8]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[3]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[14]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[6]/D|
 |              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[4]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[16]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[7]/D|
 |              sys_clk_pin |              sys_clk_pin |                                                                                   cpu/pc_unit/pc_reg[0]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[15]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[17]/D|
-|              sys_clk_pin |              sys_clk_pin |                                                                                  cpu/pc_unit/pc_reg[19]/D|
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+

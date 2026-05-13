@@ -2,10 +2,10 @@
 # Vivado v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Wed May 13 11:14:56 2026
-# Process ID: 15892
+# Start of session at: Wed May 13 13:02:31 2026
+# Process ID: 18876
 # Current directory: C:/Coding/RV32-FPGA/fpga/zybo_rv32
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent15188 C:\Coding\RV32-FPGA\fpga\zybo_rv32\zybo_rv32.xpr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent17872 C:\Coding\RV32-FPGA\fpga\zybo_rv32\zybo_rv32.xpr
 # Log file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/vivado.log
 # Journal file: C:/Coding/RV32-FPGA/fpga/zybo_rv32\vivado.jou
 #-----------------------------------------------------------
@@ -17,7 +17,7 @@ WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'C:/Coding
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/data/ip'.
-open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:05 . Memory (MB): peak = 796.176 ; gain = 138.008
+open_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:11 . Memory (MB): peak = 829.465 ; gain = 189.062
 update_compile_order -fileset sources_1
 open_hw
 connect_hw_server
@@ -30,158 +30,190 @@ INFO: [Labtools 27-2221] Launch Output:
     ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 
 
-connect_hw_server: Time (s): cpu = 00:00:01 ; elapsed = 00:00:05 . Memory (MB): peak = 849.309 ; gain = 4.047
+connect_hw_server: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 847.840 ; gain = 0.000
 open_hw_target
 INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210279784580A
-open_hw_target: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 1950.820 ; gain = 1101.512
+open_hw_target: Time (s): cpu = 00:00:06 ; elapsed = 00:00:12 . Memory (MB): peak = 1964.039 ; gain = 1116.199
 current_hw_device [get_hw_devices xc7z010_1]
 refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7z010_1] 0]
 INFO: [Labtools 27-1435] Device xc7z010 (JTAG device index = 1) is not programmed (DONE status = 0).
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 11:19:03 2026] Launched synth_1...
-Run output will be captured here: C:/Users/aayus/synth_1/runme.log
-[Wed May 13 11:19:03 2026] Launched impl_1...
-Run output will be captured here: C:/Users/aayus/impl_1/runme.log
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1435] Device xc7z010 (JTAG device index = 1) is not programmed (DONE status = 0).
-set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property PROGRAM.FILE {C:/Users/aayus/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-program_hw_devices [get_hw_devices xc7z010_1]
-INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-reset_run synth_1
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 11:30:35 2026] Launched synth_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 11:30:35 2026] Launched impl_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-program_hw_devices [get_hw_devices xc7z010_1]
-INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210279784580A
-disconnect_hw_server localhost:3121
-connect_hw_server
-INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
-open_hw_target
-INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210279784580A
-set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-current_hw_device [get_hw_devices xc7z010_1]
-refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1435] Device xc7z010 (JTAG device index = 1) is not programmed (DONE status = 0).
-reset_run synth_1
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 12:34:00 2026] Launched synth_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 12:34:00 2026] Launched impl_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
-ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210279784580A
-add_files -norecurse {C:/Coding/RV32-FPGA/src/uart_rx.v C:/Coding/RV32-FPGA/src/uart_tx.v}
-update_compile_order -fileset sources_1
-INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210279784580A
-WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
-INFO: [Labtools 27-1435] Device xc7z010 (JTAG device index = 1) is not programmed (DONE status = 0).
-WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
-reset_run synth_1
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 12:38:58 2026] Launched synth_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 12:38:58 2026] Launched impl_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
-set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-program_hw_devices [get_hw_devices xc7z010_1]
-INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210279784580A
-INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210279784580A
-WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
-INFO: [Labtools 27-1435] Device xc7z010 (JTAG device index = 1) is not programmed (DONE status = 0).
-WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
-reset_run synth_1
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 13:00:55 2026] Launched synth_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 13:00:55 2026] Launched impl_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
-open_run impl_1
-INFO: [Device 21-403] Loading part xc7z010clg400-1
-INFO: [Common 17-41] Interrupt caught. Command should exit soon.
-INFO: [Netlist 29-17] Analyzing 101 Unisim elements for replacement
-INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
-INFO: [Project 1-479] Netlist was created with Vivado 2019.1
-open_run: Time (s): cpu = 00:00:11 ; elapsed = 00:00:15 . Memory (MB): peak = 2265.000 ; gain = 209.012
-INFO: [Common 17-344] 'open_run' was cancelled
-set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-program_hw_devices [get_hw_devices xc7z010_1]
-INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-reset_run synth_1
-launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 13:22:01 2026] Launched synth_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 13:22:01 2026] Launched impl_1...
-Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
-open_run impl_1
-INFO: [Netlist 29-17] Analyzing 101 Unisim elements for replacement
-INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
-INFO: [Project 1-479] Netlist was created with Vivado 2019.1
-INFO: [Project 1-570] Preparing netlist for logic optimization
-INFO: [Timing 38-478] Restoring timing data from binary archive.
-INFO: [Timing 38-479] Binary timing data restore complete.
-INFO: [Project 1-856] Restoring constraints from binary archive.
-INFO: [Project 1-853] Binary constraint restore complete.
-Reading XDEF placement.
-Reading placer database...
-Reading XDEF routing.
-Read XDEF File: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.248 . Memory (MB): peak = 2945.074 ; gain = 0.000
-Restored from archive | CPU: 0.000000 secs | Memory: 0.000000 MB |
-Finished XDEF File Restore: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.248 . Memory (MB): peak = 2945.074 ; gain = 0.000
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 2945.074 ; gain = 0.000
-INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 44 instances were transformed.
-  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 12 instances
-  RAM64X1S => RAM64X1S (RAMS64E): 32 instances
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'zybo_top' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj zybo_top_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/dmem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dmem
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/imem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module imem
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/imm_gen.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module imm_gen
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/pc.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/pc_adder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc_adder
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top
+WARNING: [VRFC 10-3380] identifier 'perf_cycles' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:17]
+WARNING: [VRFC 10-3380] identifier 'perf_instrs' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:18]
+WARNING: [VRFC 10-3380] identifier 'perf_halted' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:19]
+WARNING: [VRFC 10-3380] identifier 'pc_out' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:20]
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/uart_rx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/uart_tx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module zybo_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim'
+"xelab -wto ea362b21bea742b59347d3e7bad25fc2 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot zybo_top_behav xil_defaultlib.zybo_top xil_defaultlib.glbl -log elaborate.log"
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto ea362b21bea742b59347d3e7bad25fc2 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot zybo_top_behav xil_defaultlib.zybo_top xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4100] "C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.pc
+Compiling module xil_defaultlib.pc_adder
+Compiling module xil_defaultlib.imem
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.imm_gen
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.uart_tx
+Compiling module xil_defaultlib.uart_rx
+Compiling module xil_defaultlib.dmem
+Compiling module xil_defaultlib.top
+Compiling module xil_defaultlib.zybo_top
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot zybo_top_behav
 
-open_run: Time (s): cpu = 00:00:23 ; elapsed = 00:00:16 . Memory (MB): peak = 3068.031 ; gain = 803.031
-CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.
-set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
-set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
-program_hw_devices [get_hw_devices xc7z010_1]
-INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-reset_run impl_1 -prev_step 
+****** Webtalk v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/xsim.dir/zybo_top_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Wed May 13 17:52:16 2026...
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 2001.090 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "zybo_top_behav -key {Behavioral:sim_1:Functional:zybo_top} -tclbatch {zybo_top.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+source zybo_top.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'zybo_top_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:11 . Memory (MB): peak = 2037.750 ; gain = 36.660
+reset_run impl_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Couldn't access process for termination
+
 launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 13:37:32 2026] Launched impl_1...
+[Wed May 13 17:57:32 2026] Launched impl_1...
 Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
 set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
 set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
 set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
 program_hw_devices [get_hw_devices xc7z010_1]
 INFO: [Labtools 27-3164] End of startup status: HIGH
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
-refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
-INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
 refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
 INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
 reset_run synth_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
+
 launch_runs impl_1 -to_step write_bitstream -jobs 6
-[Wed May 13 13:43:57 2026] Launched synth_1...
+[Wed May 13 18:07:56 2026] Launched synth_1...
 Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
-[Wed May 13 13:43:57 2026] Launched impl_1...
+[Wed May 13 18:07:56 2026] Launched impl_1...
 Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
+set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
+program_hw_devices [get_hw_devices xc7z010_1]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
+INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
+reset_run synth_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
+
+launch_runs impl_1 -to_step write_bitstream -jobs 6
+[Wed May 13 18:15:54 2026] Launched synth_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
+[Wed May 13 18:15:54 2026] Launched impl_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
+set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
+program_hw_devices [get_hw_devices xc7z010_1]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
+INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
+reset_run synth_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
+
+launch_runs impl_1 -to_step write_bitstream -jobs 6
+[Wed May 13 18:33:04 2026] Launched synth_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
+[Wed May 13 18:33:04 2026] Launched impl_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
+set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
+program_hw_devices [get_hw_devices xc7z010_1]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
+INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
+reset_run synth_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
+
+launch_runs impl_1 -to_step write_bitstream -jobs 6
+[Wed May 13 18:39:39 2026] Launched synth_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/runme.log
+[Wed May 13 18:39:39 2026] Launched impl_1...
+Run output will be captured here: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/runme.log
+set_property PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7z010_1]
+set_property PROGRAM.FILE {C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/impl_1/zybo_top.bit} [get_hw_devices xc7z010_1]
+program_hw_devices [get_hw_devices xc7z010_1]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+refresh_hw_device [lindex [get_hw_devices xc7z010_1] 0]
+INFO: [Labtools 27-1434] Device xc7z010 (JTAG device index = 1) is programmed with a design that has no supported debug core(s) in it.
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed May 13 18:50:56 2026...

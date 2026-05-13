@@ -1,0 +1,30 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/alu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/dmem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dmem
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/imem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module imem
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/imm_gen.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module imm_gen
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/pc.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/pc_adder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc_adder
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top
+WARNING: [VRFC 10-3380] identifier 'perf_cycles' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:17]
+WARNING: [VRFC 10-3380] identifier 'perf_instrs' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:18]
+WARNING: [VRFC 10-3380] identifier 'perf_halted' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:19]
+WARNING: [VRFC 10-3380] identifier 'pc_out' is used before its declaration [C:/Coding/RV32-FPGA/src/top.v:20]
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/uart_rx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/src/uart_tx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module zybo_top
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

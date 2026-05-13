@@ -1,0 +1,17 @@
+0.6
+2019.1
+May 24 2019
+15:06:07
+C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v,1778653405,verilog,,,,zybo_top,,,,,,,,
+C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/glbl.v,1558713910,verilog,,,,glbl,,,,,,,,
+C:/Coding/RV32-FPGA/src/alu.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/control.v,,alu,,,,,,,,
+C:/Coding/RV32-FPGA/src/control.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/dmem.v,,control,,,,,,,,
+C:/Coding/RV32-FPGA/src/dmem.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/imem.v,,dmem,,,,,,,,
+C:/Coding/RV32-FPGA/src/imem.v,1778670313,verilog,,C:/Coding/RV32-FPGA/src/imm_gen.v,,imem,,,,,,,,
+C:/Coding/RV32-FPGA/src/imm_gen.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/pc.v,,imm_gen,,,,,,,,
+C:/Coding/RV32-FPGA/src/pc.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/pc_adder.v,,pc,,,,,,,,
+C:/Coding/RV32-FPGA/src/pc_adder.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/regfile.v,,pc_adder,,,,,,,,
+C:/Coding/RV32-FPGA/src/regfile.v,1778468900,verilog,,C:/Coding/RV32-FPGA/src/top.v,,regfile,,,,,,,,
+C:/Coding/RV32-FPGA/src/top.v,1778655138,verilog,,C:/Coding/RV32-FPGA/src/uart_rx.v,,top,,,,,,,,
+C:/Coding/RV32-FPGA/src/uart_rx.v,1778469141,verilog,,C:/Coding/RV32-FPGA/src/uart_tx.v,,uart_rx,,,,,,,,
+C:/Coding/RV32-FPGA/src/uart_tx.v,1778469120,verilog,,C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v,,uart_tx,,,,,,,,

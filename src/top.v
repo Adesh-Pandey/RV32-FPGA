@@ -14,12 +14,7 @@ module top(
 
     wire [4:0] dmem_gpio;
 
-    assign o_perf_cycles = perf_cycles;
-    assign o_perf_instrs = perf_instrs;
-    assign o_perf_halted = perf_halted;
-    assign o_pc          = pc_out;
-    assign o_gpio        = dmem_gpio;
-
+    
     // =========================================================
     //  ALL SIGNAL DECLARATIONS (Unchanged)
     // =========================================================
@@ -237,5 +232,11 @@ module top(
             default: wb_result = mem_wb_alu_result;
         endcase
     end
+
+    assign o_perf_cycles = perf_cycles;
+    assign o_perf_instrs = perf_instrs;
+    assign o_perf_halted = perf_halted;
+    assign o_pc          = pc_out;
+    assign o_gpio        = dmem_gpio;
 
 endmodule

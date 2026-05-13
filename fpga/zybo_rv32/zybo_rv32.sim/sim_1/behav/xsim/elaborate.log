@@ -1,0 +1,24 @@
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto ea362b21bea742b59347d3e7bad25fc2 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot zybo_top_behav xil_defaultlib.zybo_top xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4100] "C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/glbl.v" Line 6. Module glbl has a timescale but at least one module in design doesn't have timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.pc
+Compiling module xil_defaultlib.pc_adder
+Compiling module xil_defaultlib.imem
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.imm_gen
+Compiling module xil_defaultlib.alu
+Compiling module xil_defaultlib.uart_tx
+Compiling module xil_defaultlib.uart_rx
+Compiling module xil_defaultlib.dmem
+Compiling module xil_defaultlib.top
+Compiling module xil_defaultlib.zybo_top
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot zybo_top_behav

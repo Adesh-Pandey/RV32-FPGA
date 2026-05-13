@@ -1,5 +1,5 @@
 ## Zybo (original, pre-2017) — RV32 SoC pin constraints
-
+set_property SEVERITY {Warning} [get_drc_checks ZPS7-1]
 ## 125 MHz system clock
 set_property -dict { PACKAGE_PIN L16  IOSTANDARD LVCMOS33 } [get_ports clk]
 create_clock -add -name sys_clk_pin -period 8.00 -waveform {0 4} [get_ports clk]
@@ -20,7 +20,8 @@ set_property -dict { PACKAGE_PIN V20  IOSTANDARD LVCMOS33 } [get_ports {gpio[2]}
 set_property -dict { PACKAGE_PIN W20  IOSTANDARD LVCMOS33 } [get_ports {gpio[3]}]
 set_property -dict { PACKAGE_PIN Y18  IOSTANDARD LVCMOS33 } [get_ports {gpio[4]}]
 
+## PMOD JF (Bottom Row) for UART
 ## PMOD JE (Bottom Row) for UART
-## ---> THESE ARE THE TWO PINS THAT WERE SWAPPED <---
-set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports uart_rx_pin]
-set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports uart_tx_pin]
+## The physical module must be plugged into JE!
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports uart_rx_pin]
+set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports uart_tx_pin]

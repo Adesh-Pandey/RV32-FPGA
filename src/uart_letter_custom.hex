@@ -1,36 +1,33 @@
-// UART RX -> LED display, with ~2-second hold per byte.
-//
-// Behavior:
-//   Wait for a UART byte.
-//   When it arrives, write its low 5 bits to GPIO LEDs (0x100).
-//   Hold for ~2 seconds (delay borrowed from rotating-LED program.hex).
-//   Loop back. New bytes that arrive during the hold are dropped.
-//
-// MMIO map (per src/top.v):
-//   0x100  GPIO LED out
-//   0x104  UART TX data (write)
-//   0x108  UART RX data (read; reading clears rx_ready)
-//   0x10C  UART status: bit0 = rx_ready, bit1 = tx_busy
-//
-// Register usage:
-//   t0 (x5)   GPIO LED addr      = 0x100
-//   t1 (x6)   UART status addr   = 0x10C
-//   t2 (x7)   UART RX data addr  = 0x108
-//   t3 (x28)  received byte
-//   t4 (x29)  delay counter
-//   t5 (x30)  status scratch
+10000293  // 0x00: addi t0, x0, 0x100    (GPIO LED addr)
+10C00313  // 0x04: addi t1, x0, 0x10C    (UART status addr)
+10800393  // 0x08: addi t2, x0, 0x108    (UART RX data addr)
+10400F93  // 0x0C: addi t6, x0, 0x104    (UART TX data addr)
 
-10000293   // 0x00: addi t0, x0, 0x100        (GPIO addr)
-10C00313   // 0x04: addi t1, x0, 0x10C        (UART status addr)
-10800393   // 0x08: addi t2, x0, 0x108        (UART RX data addr)
-00032F03   // 0x0C: lw   t5, 0(t1)            <-- wait_rx: read status
-00000013   // 0x10: nop                       (load-use pad)
-001F7F13   // 0x14: andi t5, t5, 1            (mask rx_ready bit)
-FE0F0AE3   // 0x18: beq  t5, x0, -12          (if 0, back to wait_rx)
-0003AE03   // 0x1C: lw   t3, 0(t2)            (read RX byte, clears rx_ready)
-00000013   // 0x20: nop                       (load-use pad)
-01C2A023   // 0x24: sw   t3, 0(t0)            (show byte on LEDs)
-03C00EB7   // 0x28: lui  t4, 0x3C00           (~63M iter -> ~2 sec @125MHz)
-FFFE8E93   // 0x2C: addi t4, t4, -1           <-- delay
-FE0E9EE3   // 0x30: bne  t4, x0, -4           (loop delay)
-FD9FF06F   // 0x34: jal  x0, -0x28            (back to wait_rx)
+// --- WAIT FOR LAPTOP (RX) ---
+00032F03  // 0x10: lw   t5, 0(t1)        <-- wait_rx: read status
+00000013  // 0x14: nop
+001F7E93  // 0x18: andi t4, t5, 1        (mask rx_ready bit 0)
+FE0E8AE3  // 0x1C: beq  t4, x0, -12      (if 0, back to wait_rx)
+
+// --- READ DATA & SHOW ON LEDs ---
+0003AE03  // 0x20: lw   t3, 0(t2)        (read RX byte, clears flag)
+00000013  // 0x24: nop
+01C2A023  // 0x28: sw   t3, 0(t0)        (show lowest 5 bits on LEDs)
+
+// --- CHECK IF TRANSMITTER IS BUSY ---
+00032F03  // 0x2C: lw   t5, 0(t1)        <-- wait_tx: read status
+00000013  // 0x30: nop
+002F7E93  // 0x34: andi t4, t5, 2        (mask tx_busy bit 1)
+FE0E9AE3  // 0x38: bne  t4, x0, -12      (if 1, transmitter is busy, loop)
+
+// --- ECHO BACK TO LAPTOP (TX) ---
+01CFA023  // 0x3C: sw   t3, 0(t6)        (write full 8-bit byte to TX!)
+
+// --- 2 SECOND HOLD DELAY ---
+04F79EB7  // 0x40: lui  t4, 0x04F79      (~2 sec delay upper)
+0D5E8E93  // 0x44: addi t4, t4, 0x0D5    (~2 sec delay lower)
+FFFE8E93  // 0x48: addi t4, t4, -1       <-- delay loop
+FE0E9EE3  // 0x4C: bne  t4, x0, -4       (loop delay)
+
+// --- RESTART ---
+FFE0006F  // 0x50: jal  x0, -64          (jump all the way back to 0x10)

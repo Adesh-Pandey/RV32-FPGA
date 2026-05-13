@@ -43,13 +43,10 @@ module zybo_top (
 
     assign gpio = gpio_out;
 
-    // --- THE HARDWARE BYPASS TEST ---
-    // If the pin is correct, LED 0 will be solidly ON, 
-    // and will rapidly flicker OFF when you type a key.
-    assign led[0] = uart_tx_pin; 
-    assign led[1] = 1'b0;
-    assign led[2] = 1'b0;
-    assign led[3] = 1'b0;
+    assign led[0] = perf_halted;
+    assign led[1] = perf_cycles[26];
+    assign led[2] = perf_instrs[26];
+    assign led[3] = pc_out[28];
 
     wire [7:0] uart_data;
     wire data_ready;

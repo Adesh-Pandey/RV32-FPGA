@@ -1,0 +1,33 @@
+10000293  // 0x00: addi t0, x0, 0x100    (GPIO LED addr)
+10C00313  // 0x04: addi t1, x0, 0x10C    (UART status addr)
+10800393  // 0x08: addi t2, x0, 0x108    (UART RX data addr)
+10400F93  // 0x0C: addi t6, x0, 0x104    (UART TX data addr)
+
+// --- WAIT FOR LAPTOP (RX) ---
+00032F03  // 0x10: lw   t5, 0(t1)        <-- wait_rx: read status
+00000013  // 0x14: nop
+001F7E93  // 0x18: andi t4, t5, 1        (mask rx_ready bit 0)
+FE0E8AE3  // 0x1C: beq  t4, x0, -12      (if 0, back to wait_rx)
+
+// --- READ DATA & SHOW ON LEDs ---
+0003AE03  // 0x20: lw   t3, 0(t2)        (read RX byte, clears flag)
+00000013  // 0x24: nop
+01C2A023  // 0x28: sw   t3, 0(t0)        (show lowest 5 bits on LEDs)
+
+// --- CHECK IF TRANSMITTER IS BUSY ---
+00032F03  // 0x2C: lw   t5, 0(t1)        <-- wait_tx: read status
+00000013  // 0x30: nop
+002F7E93  // 0x34: andi t4, t5, 2        (mask tx_busy bit 1)
+FE0E9AE3  // 0x38: bne  t4, x0, -12      (if 1, transmitter is busy, loop)
+
+// --- ECHO BACK TO LAPTOP (TX) ---
+01CFA023  // 0x3C: sw   t3, 0(t6)        (write full 8-bit byte to TX!)
+
+// --- 2 SECOND HOLD DELAY ---
+04F79EB7  // 0x40: lui  t4, 0x04F79      (~2 sec delay upper)
+0D5E8E93  // 0x44: addi t4, t4, 0x0D5    (~2 sec delay lower)
+FFFE8E93  // 0x48: addi t4, t4, -1       <-- delay loop
+FE0E9EE3  // 0x4C: bne  t4, x0, -4       (loop delay)
+
+// --- RESTART ---
+FFE0006F  // 0x50: jal  x0, -64          (jump all the way back to 0x10)

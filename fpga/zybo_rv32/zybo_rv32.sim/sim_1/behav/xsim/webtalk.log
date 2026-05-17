@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Webtalk v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Wed May 13 18:50:51 2026
+# Process ID: 13800
+# Current directory: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim
+# Command line: wbtcv.exe -mode batch -source C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/xsim.dir/zybo_top_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/webtalk.log
+# Journal file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim\webtalk.jou
+#-----------------------------------------------------------
+source C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.sim/sim_1/behav/xsim/xsim.dir/zybo_top_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Wed May 13 18:50:53 2026...

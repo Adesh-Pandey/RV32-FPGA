@@ -1,0 +1,28 @@
+10000293  // 0x00: addi t0, zero, 0x100  (Load GPIO MMIO address)
+
+// --- RED LIGHT (LED 0 & 1) ---
+00300313  // 0x04: addi t1, zero, 0x03   (Load RED bits: 00011)
+0062A023  // 0x08: sw   t1, 0(t0)        (Turn on RED)
+04F793B7  // 0x0C: lui  t2, 0x04F79      (Delay upper bits for 2 seconds)
+0D538393  // 0x10: addi t2, t2, 0x0D5    (Delay lower bits -> 83,333,333 loops)
+FFF38393  // 0x14: addi t2, t2, -1       (Decrement counter)
+FE039EE3  // 0x18: bne  t2, zero, 0x14   (Loop until zero)
+
+// --- YELLOW LIGHT (LED 2) ---
+00400313  // 0x1C: addi t1, zero, 0x04   (Load YELLOW bits: 00100)
+0062A023  // 0x20: sw   t1, 0(t0)        (Turn on YELLOW)
+04F793B7  // 0x24: lui  t2, 0x04F79      (Reset delay upper bits)
+0D538393  // 0x28: addi t2, t2, 0x0D5    (Reset delay lower bits)
+FFF38393  // 0x2C: addi t2, t2, -1       (Decrement counter)
+FE039EE3  // 0x30: bne  t2, zero, 0x2C   (Loop until zero)
+
+// --- GREEN LIGHT (LED 3 & 4) ---
+01800313  // 0x34: addi t1, zero, 0x18   (Load GREEN bits: 11000)
+0062A023  // 0x38: sw   t1, 0(t0)        (Turn on GREEN)
+04F793B7  // 0x3C: lui  t2, 0x04F79      (Reset delay upper bits)
+0D538393  // 0x40: addi t2, t2, 0x0D5    (Reset delay lower bits)
+FFF38393  // 0x44: addi t2, t2, -1       (Decrement counter)
+FE039EE3  // 0x48: bne  t2, zero, 0x44   (Loop until zero)
+
+// --- RESTART CYCLE ---
+FB9FF06F  // 0x4C: jal  zero, 0x04       (Jump all the way back to RED)

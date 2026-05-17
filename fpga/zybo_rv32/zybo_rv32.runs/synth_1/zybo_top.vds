@@ -1,13 +1,13 @@
 #-----------------------------------------------------------
 # Vivado v2019.1 (64-bit)
-# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Sat May  9 17:03:14 2026
-# Process ID: 337692
-# Current directory: /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
-# Command line: vivado -log zybo_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zybo_top.tcl
-# Log file: /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.vds
-# Journal file: /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/vivado.jou
+# Start of session at: Wed May 13 21:13:42 2026
+# Process ID: 14492
+# Current directory: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1
+# Command line: vivado.exe -log zybo_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zybo_top.tcl
+# Log file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.vds
+# Journal file: C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source zybo_top.tcl -notrace
 Command: synth_design -top zybo_top -part xc7z010clg400-1
@@ -16,40 +16,54 @@ Attempting to get a license for feature 'Synthesis' and/or device 'xc7z010'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z010'
 INFO: [Device 21-403] Loading part xc7z010clg400-1
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 337777 
-WARNING: [Synth 8-6901] identifier 'perf_cycles' is used before its declaration [/home/jolly/Desktop/RV32FPGA/src/top.v:13]
-WARNING: [Synth 8-6901] identifier 'perf_instrs' is used before its declaration [/home/jolly/Desktop/RV32FPGA/src/top.v:14]
-WARNING: [Synth 8-6901] identifier 'perf_halted' is used before its declaration [/home/jolly/Desktop/RV32FPGA/src/top.v:15]
-WARNING: [Synth 8-6901] identifier 'pc_out' is used before its declaration [/home/jolly/Desktop/RV32FPGA/src/top.v:16]
+INFO: Helper process launched with PID 24392 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 1685.402 ; gain = 158.688 ; free physical = 22231 ; free virtual = 29934
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 797.184 ; gain = 176.902
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'zybo_top' [/home/jolly/Desktop/RV32FPGA/fpga/rtl/zybo_top.v:1]
-INFO: [Synth 8-6157] synthesizing module 'top' [/home/jolly/Desktop/RV32FPGA/src/top.v:1]
-INFO: [Synth 8-6157] synthesizing module 'pc' [/home/jolly/Desktop/RV32FPGA/src/pc.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'pc' (1#1) [/home/jolly/Desktop/RV32FPGA/src/pc.v:1]
-INFO: [Synth 8-6157] synthesizing module 'pc_adder' [/home/jolly/Desktop/RV32FPGA/src/pc_adder.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'pc_adder' (2#1) [/home/jolly/Desktop/RV32FPGA/src/pc_adder.v:1]
-INFO: [Synth 8-6157] synthesizing module 'imem' [/home/jolly/Desktop/RV32FPGA/src/imem.v:1]
-INFO: [Synth 8-3876] $readmem data file '/home/jolly/Desktop/RV32FPGA/src/program.hex' is read successfully [/home/jolly/Desktop/RV32FPGA/src/imem.v:11]
-INFO: [Synth 8-6155] done synthesizing module 'imem' (3#1) [/home/jolly/Desktop/RV32FPGA/src/imem.v:1]
-INFO: [Synth 8-6157] synthesizing module 'control' [/home/jolly/Desktop/RV32FPGA/src/control.v:1]
-INFO: [Synth 8-226] default block is never used [/home/jolly/Desktop/RV32FPGA/src/control.v:56]
-INFO: [Synth 8-155] case statement is not full and has no default [/home/jolly/Desktop/RV32FPGA/src/control.v:27]
-INFO: [Synth 8-6155] done synthesizing module 'control' (4#1) [/home/jolly/Desktop/RV32FPGA/src/control.v:1]
-INFO: [Synth 8-6157] synthesizing module 'regfile' [/home/jolly/Desktop/RV32FPGA/src/regfile.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'regfile' (5#1) [/home/jolly/Desktop/RV32FPGA/src/regfile.v:1]
-INFO: [Synth 8-6157] synthesizing module 'imm_gen' [/home/jolly/Desktop/RV32FPGA/src/imm_gen.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'imm_gen' (6#1) [/home/jolly/Desktop/RV32FPGA/src/imm_gen.v:1]
-INFO: [Synth 8-6157] synthesizing module 'alu' [/home/jolly/Desktop/RV32FPGA/src/alu.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'alu' (7#1) [/home/jolly/Desktop/RV32FPGA/src/alu.v:1]
-INFO: [Synth 8-6157] synthesizing module 'dmem' [/home/jolly/Desktop/RV32FPGA/src/dmem.v:1]
+INFO: [Synth 8-6157] synthesizing module 'zybo_top' [C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v:1]
+INFO: [Synth 8-6157] synthesizing module 'top' [C:/Coding/RV32-FPGA/src/top.v:1]
+INFO: [Synth 8-6157] synthesizing module 'pc' [C:/Coding/RV32-FPGA/src/pc.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'pc' (1#1) [C:/Coding/RV32-FPGA/src/pc.v:1]
+INFO: [Synth 8-6157] synthesizing module 'pc_adder' [C:/Coding/RV32-FPGA/src/pc_adder.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'pc_adder' (2#1) [C:/Coding/RV32-FPGA/src/pc_adder.v:1]
+INFO: [Synth 8-6157] synthesizing module 'imem' [C:/Coding/RV32-FPGA/src/imem.v:1]
+INFO: [Synth 8-3876] $readmem data file 'C:/Coding/RV32-FPGA/src/uart_letter_custom.hex' is read successfully [C:/Coding/RV32-FPGA/src/imem.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'imem' (3#1) [C:/Coding/RV32-FPGA/src/imem.v:1]
+INFO: [Synth 8-6157] synthesizing module 'control' [C:/Coding/RV32-FPGA/src/control.v:1]
+INFO: [Synth 8-226] default block is never used [C:/Coding/RV32-FPGA/src/control.v:56]
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Coding/RV32-FPGA/src/control.v:27]
+INFO: [Synth 8-6155] done synthesizing module 'control' (4#1) [C:/Coding/RV32-FPGA/src/control.v:1]
+INFO: [Synth 8-6157] synthesizing module 'regfile' [C:/Coding/RV32-FPGA/src/regfile.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'regfile' (5#1) [C:/Coding/RV32-FPGA/src/regfile.v:1]
+INFO: [Synth 8-6157] synthesizing module 'imm_gen' [C:/Coding/RV32-FPGA/src/imm_gen.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'imm_gen' (6#1) [C:/Coding/RV32-FPGA/src/imm_gen.v:1]
+INFO: [Synth 8-6157] synthesizing module 'alu' [C:/Coding/RV32-FPGA/src/alu.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'alu' (7#1) [C:/Coding/RV32-FPGA/src/alu.v:1]
+INFO: [Synth 8-6157] synthesizing module 'uart_tx' [C:/Coding/RV32-FPGA/src/uart_tx.v:1]
+	Parameter CLKS_PER_BIT bound to: 1085 - type: integer 
+	Parameter IDLE bound to: 4'b0000 
+	Parameter START bound to: 4'b0001 
+	Parameter DATA bound to: 4'b0010 
+	Parameter PARITY bound to: 4'b0011 
+	Parameter STOP bound to: 4'b0100 
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Coding/RV32-FPGA/src/uart_tx.v:35]
+INFO: [Synth 8-6155] done synthesizing module 'uart_tx' (8#1) [C:/Coding/RV32-FPGA/src/uart_tx.v:1]
+INFO: [Synth 8-6157] synthesizing module 'uart_rx' [C:/Coding/RV32-FPGA/src/uart_rx.v:1]
+	Parameter CLKS_PER_BIT bound to: 1085 - type: integer 
+	Parameter IDLE bound to: 4'b0000 
+	Parameter START bound to: 4'b0001 
+	Parameter DATA bound to: 4'b0010 
+	Parameter PARITY bound to: 4'b0011 
+	Parameter STOP bound to: 4'b0100 
+INFO: [Synth 8-155] case statement is not full and has no default [C:/Coding/RV32-FPGA/src/uart_rx.v:31]
+INFO: [Synth 8-6155] done synthesizing module 'uart_rx' (9#1) [C:/Coding/RV32-FPGA/src/uart_rx.v:1]
+INFO: [Synth 8-6157] synthesizing module 'dmem' [C:/Coding/RV32-FPGA/src/dmem.v:1]
 	Parameter GPIO_ADDR bound to: 256 - type: integer 
-INFO: [Synth 8-6155] done synthesizing module 'dmem' (8#1) [/home/jolly/Desktop/RV32FPGA/src/dmem.v:1]
-WARNING: [Synth 8-6014] Unused sequential element perf_stalls_reg was removed.  [/home/jolly/Desktop/RV32FPGA/src/top.v:102]
-WARNING: [Synth 8-6014] Unused sequential element perf_flushes_reg was removed.  [/home/jolly/Desktop/RV32FPGA/src/top.v:103]
-INFO: [Synth 8-6155] done synthesizing module 'top' (9#1) [/home/jolly/Desktop/RV32FPGA/src/top.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'zybo_top' (10#1) [/home/jolly/Desktop/RV32FPGA/fpga/rtl/zybo_top.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'dmem' (10#1) [C:/Coding/RV32-FPGA/src/dmem.v:1]
+WARNING: [Synth 8-6014] Unused sequential element perf_stalls_reg was removed.  [C:/Coding/RV32-FPGA/src/top.v:68]
+WARNING: [Synth 8-6014] Unused sequential element perf_flushes_reg was removed.  [C:/Coding/RV32-FPGA/src/top.v:69]
+INFO: [Synth 8-6155] done synthesizing module 'top' (11#1) [C:/Coding/RV32-FPGA/src/top.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'zybo_top' (12#1) [C:/Coding/RV32-FPGA/fpga/rtl/zybo_top.v:1]
 WARNING: [Synth 8-3331] design control has unconnected port funct7[6]
 WARNING: [Synth 8-3331] design control has unconnected port funct7[4]
 WARNING: [Synth 8-3331] design control has unconnected port funct7[3]
@@ -59,7 +73,7 @@ WARNING: [Synth 8-3331] design control has unconnected port funct7[0]
 WARNING: [Synth 8-3331] design imem has unconnected port a[1]
 WARNING: [Synth 8-3331] design imem has unconnected port a[0]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 1715.309 ; gain = 188.594 ; free physical = 22182 ; free virtual = 29886
+Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 861.051 ; gain = 240.770
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -72,41 +86,41 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 1733.121 ; gain = 206.406 ; free physical = 22177 ; free virtual = 29880
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 861.051 ; gain = 240.770
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 1733.121 ; gain = 206.406 ; free physical = 22177 ; free virtual = 29880
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 861.051 ; gain = 240.770
 ---------------------------------------------------------------------------------
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [/home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc]
-Finished Parsing XDC File [/home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/zybo_top_propImpl.xdc].
+Parsing XDC File [C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc]
+Finished Parsing XDC File [C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/zybo_top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/zybo_top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1982.746 ; gain = 0.000 ; free physical = 22103 ; free virtual = 29807
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 992.676 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1982.746 ; gain = 0.000 ; free physical = 22103 ; free virtual = 29807
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 992.676 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22141 ; free virtual = 29844
+Finished Constraint Validation : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z010clg400-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22141 ; free virtual = 29844
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22141 ; free virtual = 29844
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "RAM" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5587] ROM size for "reg_write" is below threshold of ROM address width. It will be mapped to LUTs
@@ -118,8 +132,30 @@ INFO: [Synth 8-5546] ROM "branch" won't be mapped to RAM because it is too spars
 INFO: [Synth 8-5546] ROM "jump" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "jalr" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "alu_src1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'uart_tx'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'uart_rx'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                              000 |                             0000
+                   START |                              001 |                             0001
+                    DATA |                              010 |                             0010
+                  PARITY |                              011 |                             0011
+                    STOP |                              100 |                             0100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'uart_tx'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                              000 |                             0000
+                   START |                              001 |                             0001
+                    DATA |                              010 |                             0010
+                  PARITY |                              011 |                             0011
+                    STOP |                              100 |                             0100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'uart_rx'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22132 ; free virtual = 29836
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -134,33 +170,48 @@ Detailed RTL Component Info :
 +---Adders : 
 	   2 Input     32 Bit       Adders := 3     
 	   3 Input     32 Bit       Adders := 1     
+	   2 Input     12 Bit       Adders := 1     
+	   2 Input     11 Bit       Adders := 1     
 	   2 Input      6 Bit       Adders := 1     
 	   2 Input      4 Bit       Adders := 1     
+	   2 Input      3 Bit       Adders := 2     
 +---XORs : 
 	   2 Input     32 Bit         XORs := 1     
++---XORs : 
+	                7 Bit    Wide XORs := 1     
 +---Registers : 
 	               32 Bit    Registers := 15    
+	               12 Bit    Registers := 2     
+	                8 Bit    Registers := 3     
 	                5 Bit    Registers := 6     
 	                4 Bit    Registers := 3     
-	                3 Bit    Registers := 1     
+	                3 Bit    Registers := 3     
 	                2 Bit    Registers := 4     
-	                1 Bit    Registers := 13    
+	                1 Bit    Registers := 17    
 +---RAMs : 
 	               2K Bit         RAMs := 1     
 +---Muxes : 
 	  65 Input     32 Bit        Muxes := 1     
-	   2 Input     32 Bit        Muxes := 8     
+	   2 Input     32 Bit        Muxes := 9     
 	   6 Input     32 Bit        Muxes := 1     
-	   4 Input     32 Bit        Muxes := 2     
-	   3 Input     32 Bit        Muxes := 3     
+	   4 Input     32 Bit        Muxes := 3     
+	   3 Input     32 Bit        Muxes := 4     
+	   5 Input     12 Bit        Muxes := 2     
+	   2 Input     12 Bit        Muxes := 1     
+	   2 Input      8 Bit        Muxes := 1     
+	   5 Input      8 Bit        Muxes := 2     
 	   2 Input      4 Bit        Muxes := 1     
 	   8 Input      4 Bit        Muxes := 2     
 	   4 Input      4 Bit        Muxes := 1     
 	  11 Input      4 Bit        Muxes := 1     
 	   7 Input      3 Bit        Muxes := 1     
+	   5 Input      3 Bit        Muxes := 4     
+	   2 Input      3 Bit        Muxes := 1     
 	  11 Input      2 Bit        Muxes := 2     
 	   2 Input      2 Bit        Muxes := 2     
 	  11 Input      1 Bit        Muxes := 6     
+	   5 Input      1 Bit        Muxes := 10    
+	   2 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -212,6 +263,40 @@ Detailed RTL Component Info :
 	   2 Input      6 Bit       Adders := 1     
 +---XORs : 
 	   2 Input     32 Bit         XORs := 1     
+Module uart_tx 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     11 Bit       Adders := 1     
+	   2 Input      3 Bit       Adders := 1     
++---XORs : 
+	                7 Bit    Wide XORs := 1     
++---Registers : 
+	               12 Bit    Registers := 1     
+	                8 Bit    Registers := 1     
+	                3 Bit    Registers := 1     
+	                1 Bit    Registers := 2     
++---Muxes : 
+	   5 Input     12 Bit        Muxes := 1     
+	   5 Input      3 Bit        Muxes := 2     
+	   5 Input      1 Bit        Muxes := 6     
+Module uart_rx 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     12 Bit       Adders := 1     
+	   2 Input      3 Bit       Adders := 1     
++---Registers : 
+	               12 Bit    Registers := 1     
+	                8 Bit    Registers := 1     
+	                3 Bit    Registers := 1     
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     12 Bit        Muxes := 1     
+	   5 Input     12 Bit        Muxes := 1     
+	   2 Input      8 Bit        Muxes := 1     
+	   5 Input      8 Bit        Muxes := 2     
+	   5 Input      3 Bit        Muxes := 2     
+	   2 Input      3 Bit        Muxes := 1     
+	   5 Input      1 Bit        Muxes := 4     
 Module dmem 
 Detailed RTL Component Info : 
 +---Registers : 
@@ -226,16 +311,18 @@ Detailed RTL Component Info :
 	   2 Input     32 Bit       Adders := 1     
 +---Registers : 
 	               32 Bit    Registers := 14    
+	                8 Bit    Registers := 1     
 	                5 Bit    Registers := 5     
 	                4 Bit    Registers := 1     
 	                3 Bit    Registers := 1     
 	                2 Bit    Registers := 4     
-	                1 Bit    Registers := 13    
+	                1 Bit    Registers := 14    
 +---Muxes : 
-	   4 Input     32 Bit        Muxes := 2     
-	   3 Input     32 Bit        Muxes := 3     
-	   2 Input     32 Bit        Muxes := 3     
+	   4 Input     32 Bit        Muxes := 3     
+	   3 Input     32 Bit        Muxes := 4     
+	   2 Input     32 Bit        Muxes := 4     
 	   2 Input      2 Bit        Muxes := 2     
+	   2 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -300,11 +387,7 @@ INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[29]' (FDRE) to 'cpu/i
 INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[31]' (FDRE) to 'cpu/if_id_instr_reg[30]'
 INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[1]' (FDSE) to 'cpu/if_id_instr_reg[0]'
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (\cpu/if_id_instr_reg[0] )
-INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[10]' (FDRE) to 'cpu/if_id_instr_reg[11]'
-INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[8]' (FDRE) to 'cpu/if_id_instr_reg[24]'
-INFO: [Synth 8-3886] merging instance 'cpu/id_ex_rs2_reg[4]' (FDR) to 'cpu/id_ex_rd_reg[1]'
 INFO: [Synth 8-3886] merging instance 'cpu/if_id_instr_reg[18]' (FDRE) to 'cpu/if_id_instr_reg[19]'
-INFO: [Synth 8-3886] merging instance 'cpu/id_ex_rd_reg[3]' (FDR) to 'cpu/id_ex_rd_reg[4]'
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[6]' (FDR) to 'cpu/id_ex_imm_ext_reg[7]'
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[7]' (FDR) to 'cpu/id_ex_imm_ext_reg[9]'
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[9]' (FDR) to 'cpu/id_ex_imm_ext_reg[10]'
@@ -314,10 +397,8 @@ INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[27]' (FDR) to 'cpu/
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[29]' (FDR) to 'cpu/id_ex_imm_ext_reg[30]'
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_imm_ext_reg[30]' (FDR) to 'cpu/id_ex_imm_ext_reg[31]'
 INFO: [Synth 8-3886] merging instance 'cpu/id_ex_rs1_reg[3]' (FDR) to 'cpu/id_ex_rs1_reg[4]'
-INFO: [Synth 8-3886] merging instance 'cpu/ex_mem_rd_reg[3]' (FDR) to 'cpu/ex_mem_rd_reg[4]'
-INFO: [Synth 8-3886] merging instance 'cpu/mem_wb_rd_reg[3]' (FDR) to 'cpu/mem_wb_rd_reg[4]'
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:17 ; elapsed = 00:00:19 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22097 ; free virtual = 29804
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:46 ; elapsed = 00:00:49 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -345,13 +426,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 22013 ; free virtual = 29720
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:55 ; elapsed = 00:00:59 . Memory (MB): peak = 992.676 ; gain = 372.395
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21870 ; free virtual = 29578
+Finished Timing Optimization : Time (s): cpu = 00:01:17 ; elapsed = 00:01:22 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -378,7 +459,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21859 ; free virtual = 29566
+Finished Technology Mapping : Time (s): cpu = 00:01:20 ; elapsed = 00:01:26 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -402,7 +483,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished IO Insertion : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -415,7 +496,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -427,25 +508,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -476,58 +557,60 @@ Report Cell Usage:
 |      |Cell     |Count |
 +------+---------+------+
 |1     |BUFG     |     1|
-|2     |CARRY4   |    54|
-|3     |LUT1     |     7|
-|4     |LUT2     |    63|
-|5     |LUT3     |   100|
-|6     |LUT4     |   290|
-|7     |LUT5     |   293|
-|8     |LUT6     |   506|
+|2     |CARRY4   |    57|
+|3     |LUT1     |    53|
+|4     |LUT2     |    78|
+|5     |LUT3     |   148|
+|6     |LUT4     |   358|
+|7     |LUT5     |   338|
+|8     |LUT6     |   446|
 |9     |RAM32M   |    12|
 |10    |RAM64X1S |    32|
 |11    |SRL16E   |     1|
-|12    |FDRE     |   573|
-|13    |FDSE     |     1|
-|14    |IBUF     |     2|
-|15    |OBUF     |     9|
+|12    |FDRE     |   641|
+|13    |FDSE     |     2|
+|14    |IBUF     |     3|
+|15    |OBUF     |    10|
 +------+---------+------+
 
 Report Instance Areas: 
 +------+------------------+---------+------+
 |      |Instance          |Module   |Cells |
 +------+------------------+---------+------+
-|1     |top               |         |  1944|
-|2     |  cpu             |top      |  1920|
-|3     |    alu_unit      |alu      |   231|
-|4     |    dmem_unit     |dmem     |    79|
-|5     |    pc_adder_unit |pc_adder |     8|
-|6     |    pc_unit       |pc       |   828|
-|7     |    reg_unit      |regfile  |    91|
+|1     |top               |         |  2180|
+|2     |  cpu             |top      |  2154|
+|3     |    alu_unit      |alu      |    50|
+|4     |    dmem_unit     |dmem     |    80|
+|5     |    my_rx         |uart_rx  |    90|
+|6     |    my_tx         |uart_tx  |    76|
+|7     |    pc_adder_unit |pc_adder |     8|
+|8     |    pc_unit       |pc       |  1056|
+|9     |    reg_unit      |regfile  |   108|
 +------+------------------+---------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21858 ; free virtual = 29566
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 32 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1982.746 ; gain = 206.406 ; free physical = 21900 ; free virtual = 29607
-Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 1982.746 ; gain = 456.031 ; free physical = 21900 ; free virtual = 29607
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:14 ; elapsed = 00:01:26 . Memory (MB): peak = 1176.242 ; gain = 424.336
+Synthesis Optimization Complete : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1176.242 ; gain = 555.961
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 98 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 101 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2070.754 ; gain = 0.000 ; free physical = 21858 ; free virtual = 29565
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1176.242 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 44 instances were transformed.
   RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 12 instances
   RAM64X1S => RAM64X1S (RAMS64E): 32 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-77 Infos, 46 Warnings, 0 Critical Warnings and 0 Errors encountered.
+81 Infos, 42 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2070.754 ; gain = 684.281 ; free physical = 21899 ; free virtual = 29606
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2070.754 ; gain = 0.000 ; free physical = 21899 ; free virtual = 29606
+synth_design: Time (s): cpu = 00:01:30 ; elapsed = 00:01:40 . Memory (MB): peak = 1176.242 ; gain = 821.117
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1176.242 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint '/home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file zybo_top_utilization_synth.rpt -pb zybo_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Sat May  9 17:03:45 2026...
+INFO: [Common 17-206] Exiting Vivado at Wed May 13 21:15:29 2026...

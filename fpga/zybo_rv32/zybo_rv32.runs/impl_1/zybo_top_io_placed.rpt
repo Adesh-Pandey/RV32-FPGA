@@ -1,8 +1,8 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
-| Tool Version              : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date                      : Sat May  9 17:04:50 2026
-| Host                      : archlinux running 64-bit Arch Linux
+| Tool Version              : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date                      : Wed May 13 21:16:59 2026
+| Host                      : AayushMSI running 64-bit major release  (build 9200)
 | Command                   : report_io -file zybo_top_io_placed.rpt
 | Design                    : zybo_top
 | Device                    : xc7z010
@@ -25,7 +25,7 @@ Table of Contents
 +---------------+
 | Total User IO |
 +---------------+
-|            11 |
+|            13 |
 +---------------+
 
 
@@ -209,7 +209,7 @@ Table of Contents
 | J12        |             |            | GND                     | GND           |             |         |            |      |                     |                      |     0.0 |            |           |          |      |                  |              |                   |              |
 | J13        |             |            | VCCINT                  | VCCINT        |             |         |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | J14        |             | High Range | IO_L20N_T3_AD6N_35      | User IO       |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| J15        |             | High Range | IO_25_35                | User IO       |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| J15        | uart_rx_pin | High Range | IO_25_35                | INPUT         | LVCMOS33    |      35 |            |      |                     |                 NONE |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | J16        |             | High Range | IO_L24N_T3_AD15N_35     | User IO       |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | J17        |             | High Range | VCCO_35                 | VCCO          |             |      35 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
 | J18        |             | High Range | IO_L14P_T2_AD4P_SRCC_35 | User IO       |             |      35 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
@@ -410,7 +410,7 @@ Table of Contents
 | W13        |             | High Range | IO_L4N_T0_34            | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W14        |             | High Range | IO_L8P_T1_34            | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W15        |             | High Range | IO_L10N_T1_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
-| W16        |             | High Range | IO_L18N_T2_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
+| W16        | uart_tx_pin | High Range | IO_L18N_T2_34           | OUTPUT        | LVCMOS33    |      34 |         12 | SLOW |                     |            FP_VTT_50 |         | FIXED      |           |          |      | NONE             |              |                   |              |
 | W17        |             | High Range | VCCO_34                 | VCCO          |             |      34 |            |      |                     |                      |    3.30 |            |           |          |      |                  |              |                   |              |
 | W18        |             | High Range | IO_L22P_T3_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |
 | W19        |             | High Range | IO_L22N_T3_34           | User IO       |             |      34 |            |      |                     |                      |         |            |           |          |      |                  |              |                   |              |

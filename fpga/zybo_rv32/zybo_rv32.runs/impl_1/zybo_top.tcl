@@ -65,18 +65,17 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
+  set_param chipscope.maxJobs 3
   set_param xicom.use_bs_reader 1
-  set_param chipscope.maxJobs 7
   create_project -in_memory -part xc7z010clg400-1
-  set_property board_part digilentinc.com:zybo:part0:2.0 [current_project]
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
-  set_property webtalk.parent_dir /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.cache/wt [current_project]
-  set_property parent.project_path /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.xpr [current_project]
-  set_property ip_output_repo /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.cache/ip [current_project]
+  set_property webtalk.parent_dir C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.cache/wt [current_project]
+  set_property parent.project_path C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.xpr [current_project]
+  set_property ip_output_repo C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
-  add_files -quiet /home/jolly/Desktop/RV32FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.dcp
-  read_xdc /home/jolly/Desktop/RV32FPGA/fpga/constraints/zybo_rv32.xdc
+  add_files -quiet C:/Coding/RV32-FPGA/fpga/zybo_rv32/zybo_rv32.runs/synth_1/zybo_top.dcp
+  read_xdc C:/Coding/RV32-FPGA/fpga/constraints/zybo_rv32.xdc
   link_design -top zybo_top -part xc7z010clg400-1
   close_msg_db -file init_design.pb
 } RESULT]
